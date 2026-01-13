@@ -1,9 +1,26 @@
+# 🔥 Core ML
 torch
 transformers
 diffusers
 accelerate
 safetensors
 huggingface_hub
+
+# 🎙️ Text-to-Speech
 TTS
+
+# 🎬 Video
 ffmpeg-python
+Pillow
+opencv-python-headless
+
+# 🧠 Graph / Orchestration
 langgraph
+
+# ☁️ AWS S3
+boto3
+
+# 🧩 Utilities
+numpy
+scipy
+tqdm
