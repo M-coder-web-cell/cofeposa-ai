@@ -13,7 +13,7 @@ model = AutoModelForCausalLM.from_pretrained(
     torch_dtype=torch.float16,
     device_map="auto"
 )
-
+HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 def generate_script():
     prompt_text = get_prompt()["title"]
 

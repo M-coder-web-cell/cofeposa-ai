@@ -12,6 +12,7 @@ MODELS = {
     "animatediff": [],                   # skip if size >1GB
     "upscalers": ["xinntao/Real-ESRGAN"] # small
 }
+HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 
 def download():
     for category, model_list in MODELS.items():
