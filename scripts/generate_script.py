@@ -4,7 +4,7 @@ from prompts.prompt import get_prompt
 
 MODEL_PATH = "/workspace/models/llm/meta-llama_Meta-Llama-3-8B-Instruct"
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH,local_files_only=True)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_PATH,
     torch_dtype=torch.float16,
