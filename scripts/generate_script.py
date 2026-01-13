@@ -2,7 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from prompts.prompt import get_prompt
 
-MODEL_NAME = "openlm-research/open_llama_3b_1"
+MODEL_NAME = "eleutherai/pythia-2.8b"
 CACHE_DIR = "/workspace/cache"
 
 # Load tokenizer & model from HF repo (automatic caching)
