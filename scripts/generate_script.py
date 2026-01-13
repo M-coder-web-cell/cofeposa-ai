@@ -2,7 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from prompts.prompt import get_prompt
 
-MODEL_NAME = "mosaicml/mpt-7b-instruct"
+MODEL_NAME = "openlm-research/open_llama_3b_1"
 CACHE_DIR = "/workspace/cache"
 
 # Load tokenizer & model from HF repo (automatic caching)
