@@ -1,6 +1,14 @@
 import os
+import sys
 import shutil
 from huggingface_hub import snapshot_download
+
+# When running this script directly (python scripts/download_models.py),
+# Python's import path will set the working directory to the `scripts` folder,
+# which makes top-level imports like `utils` fail. Ensure project root is on
+# sys.path so `from utils.s3 import upload_dir` works.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from utils.s3 import upload_dir
 
 # Cache paths
