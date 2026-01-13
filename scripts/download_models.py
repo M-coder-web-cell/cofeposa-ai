@@ -1,47 +1,48 @@
 import os
+import shutil
+from huggingface_hub import snapshot_download
+from utils.s3 import upload_dir
 
-# 🔥 MUST BE FIRST (before huggingface imports)
+# Cache paths
 os.environ["HF_HOME"] = "/workspace/cache"
 os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/transformers"
 os.environ["DIFFUSERS_CACHE"] = "/workspace/cache/diffusers"
-os.environ["TORCH_HOME"] = "/workspace/cache/torch"
 
-from huggingface_hub import snapshot_download
-
-BASE_DIR = "/workspace/models"
-CACHE_DIR = "/workspace/cache"
-
-os.makedirs(BASE_DIR, exist_ok=True)
-os.makedirs(CACHE_DIR, exist_ok=True)
-
-# Optional HF token (for gated/private models)
+BASE_DIR = "/workspace/tmp_model"
 HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
-if HF_TOKEN:
-    os.environ["HF_HUB_TOKEN"] = HF_TOKEN
 
 MODELS = {
     "llm": ["eleutherai/pythia-2.8b"],
     "tts": ["coqui/XTTS-v2"],
-    "sdxl": ["runwayml/stable-diffusion-v1-5"],
-    "animatediff": [],
-    "upscalers": ["xinntao/Real-ESRGAN"]
+    "sd":  ["stabilityai/stable-diffusion-2-1-base"]
 }
 
-def download():
-    for category, model_list in MODELS.items():
-        for model in model_list:
-            print(f"\n⬇ Downloading {model}")
-            snapshot_download(
-                repo_id=model,
-                local_dir=os.path.join(
-                    BASE_DIR,
-                    category,
-                    model.replace("/", "_")
-                ),
-                token=HF_TOKEN,
-                local_dir_use_symlinks=False
-            )
+def process_model(category, model_id):
+    local_dir = f"{BASE_DIR}/{model_id.replace('/', '_')}"
+    s3_prefix = f"models/{category}/{model_id.replace('/', '_')}"
+
+    print(f"\n⬇ Downloading {model_id}")
+    snapshot_download(
+        repo_id=model_id,
+        local_dir=local_dir,
+        token=HF_TOKEN,
+        allow_patterns=["*.json", "*.safetensors", "*.txt", "*.model"],
+        ignore_patterns=["*.ckpt", "*.bin", "*.pt"]
+    )
+
+    print(f"☁ Uploading {model_id} to S3")
+    upload_dir(local_dir, s3_prefix)
+
+    print(f"🧹 Cleaning local files for {model_id}")
+    shutil.rmtree(local_dir)
+
+def main():
+    for category, models in MODELS.items():
+        for model in models:
+            process_model(category, model)
+
+    print("\n✅ All models safely stored in S3")
 
 if __name__ == "__main__":
-    download()
-    print("\n✅ All models downloaded successfully.")
+    main()
+``
