@@ -22,9 +22,10 @@ HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 MODELS = {
     "llm": ["eleutherai/pythia-2.8b"],
     "tts": ["coqui/XTTS-v2"],
-    # Use a public Stable Diffusion model by default so the script works
-    # out-of-the-box. Replace with your gated model if you have access.
-    "sd":  ["runwayml/stable-diffusion-v1-5"]
+    # Use a small public image model by default to avoid large downloads
+    # on limited disk environments. Replace with a larger SD model if you
+    # have the space and access.
+    "sd":  ["google/ddpm-celebahq-256"]
 }
 
 def process_model(category, model_id):
