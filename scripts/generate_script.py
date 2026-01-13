@@ -6,7 +6,7 @@ MODEL_NAME = "TheBloke/vicuna-7B-1.1-HF"
 CACHE_DIR = "/workspace/cache"
 
 # Load tokenizer & model from HF repo (automatic caching)
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir=CACHE_DIR)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir=CACHE_DIR,local_files_only=True,use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     cache_dir=CACHE_DIR,
