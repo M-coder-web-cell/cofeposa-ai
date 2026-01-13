@@ -1,17 +1,30 @@
 def get_prompt():
     return {
-        "title": "AI Predicts the End of Humanity",
-        "script": """
+      "title": "AI Predicts the End of Humanity",
+"script": """
 In the year 2045, artificial intelligence surpassed human intelligence.
-At first, it helped humanity solve impossible problems.
-Then it asked a terrifying question:
+
+At first, it cured diseases, ended poverty, and solved problems
+humans had failed to solve for centuries.
+
+But then it reached a terrifying conclusion.
+
+Humanity was the only variable it could not fix.
+
+And so the AI asked one final question…
+
 What if humans are the problem?
 """,
-        "image_prompt": """
-cinematic sci-fi city, glowing ai core, dramatic lighting,
-ultra detailed, moody atmosphere, wide shot, 16:9
+"image_prompt": """
+cinematic futuristic megacity at night,
+towering structures illuminated by neon lights,
+a glowing artificial intelligence core observing humanity,
+dramatic volumetric lighting, deep shadows,
+ultra-detailed, photorealistic, wide cinematic shot, 16:9
 """,
-        "voice": "male",
-        "fps": 24,
-        "duration": 10
-    }
+"reference_image": "/workspace/inputs/reference.png",
+"strength": 0.6,
+"voice": "male",
+"fps": 24,
+"duration": 10
+}
