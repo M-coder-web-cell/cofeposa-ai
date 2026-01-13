@@ -6,7 +6,7 @@ os.makedirs(BASE_DIR, exist_ok=True)
 os.environ["HF_HOME"] = "/workspace/cache"
 
 MODELS = {
-    "llm": ["TheBloke/guanaco-3B-HF"],  # smaller than Vicuna-7B
+    "llm": ["TheBloke/vicuna-3B-HF"],  # smaller than Vicuna-7B
     "tts": ["coqui/XTTS-v2"],            # 1 GB, okay
     "sdxl": ["stabilityai/stable-diffusion-2-1-base"],  # smaller than SDXL
     "animatediff": [],                   # skip if size >1GB
