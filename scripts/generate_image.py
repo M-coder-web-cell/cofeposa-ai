@@ -4,7 +4,7 @@ import torch
 from diffusers import StableDiffusionXLImg2ImgPipeline
 
 # Make sure this points to the BASE model folder (sdxl-base)
-MODEL_PATH = "/workspace/models/sdxl/stabilityai/stable-diffusion-xl-base-1.0"
+MODEL_PATH = "/workspace/models/runwayml/stable-diffusion-v1-5"
 
 pipe = StableDiffusionXLImg2ImgPipeline.from_pretrained(
     MODEL_PATH,

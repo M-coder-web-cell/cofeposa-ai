@@ -13,7 +13,7 @@ if HF_TOKEN:
 MODELS = {
     "llm": ["eleutherai/pythia-2.8b"],  
     "tts": ["coqui/XTTS-v2"],            
-    "sdxl": ["stabilityai/stable-diffusion-xl-base-1.0"],  
+    "sdxl": ["runwayml/stable-diffusion-v1-5"],  
     "animatediff": [],                   
     "upscalers": ["xinntao/Real-ESRGAN"] 
 }
