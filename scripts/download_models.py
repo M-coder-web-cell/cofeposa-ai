@@ -6,7 +6,7 @@ os.makedirs(BASE_DIR, exist_ok=True)
 os.environ["HF_HOME"] = "/workspace/cache"
 
 MODELS = {
-    "llm": ["meta-llama/Meta-Llama-3-8B-Instruct"],
+    "llm": ["TheBloke/vicuna-7B-1.1-HF"],
     "tts": ["coqui/XTTS-v2"],
     "sdxl": [
         "stabilityai/stable-diffusion-xl-base-1.0",
