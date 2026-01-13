@@ -22,7 +22,9 @@ HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 MODELS = {
     "llm": ["eleutherai/pythia-2.8b"],
     "tts": ["coqui/XTTS-v2"],
-    "sd":  ["stabilityai/stable-diffusion-2-1-base"]
+    # Use a public Stable Diffusion model by default so the script works
+    # out-of-the-box. Replace with your gated model if you have access.
+    "sd":  ["runwayml/stable-diffusion-v1-5"]
 }
 
 def process_model(category, model_id):
@@ -30,19 +32,29 @@ def process_model(category, model_id):
     s3_prefix = f"models/{category}/{model_id.replace('/', '_')}"
 
     print(f"\n⬇ Downloading {model_id}")
-    snapshot_download(
-        repo_id=model_id,
-        local_dir=local_dir,
-        token=HF_TOKEN,
-        allow_patterns=["*.json", "*.safetensors", "*.txt", "*.model"],
-        ignore_patterns=["*.ckpt", "*.bin", "*.pt"]
-    )
+    try:
+        snapshot_download(
+            repo_id=model_id,
+            local_dir=local_dir,
+            token=HF_TOKEN,
+            allow_patterns=["*.json", "*.safetensors", "*.txt", "*.model"],
+            ignore_patterns=["*.ckpt", "*.bin", "*.pt"]
+        )
+    except Exception as e:
+        print(f"⚠️ Skipping {model_id}: download failed: {e}")
+        return
 
     print(f"☁ Uploading {model_id} to S3")
-    upload_dir(local_dir, s3_prefix)
+    try:
+        upload_dir(local_dir, s3_prefix)
+    except Exception as e:
+        print(f"⚠️ Upload failed for {model_id}: {e}")
 
     print(f"🧹 Cleaning local files for {model_id}")
-    shutil.rmtree(local_dir)
+    try:
+        shutil.rmtree(local_dir)
+    except Exception:
+        pass
 
 def main():
     for category, models in MODELS.items():
