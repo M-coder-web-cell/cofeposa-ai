@@ -1,3 +1,4 @@
+import os
 from prompts.prompt import get_prompt
 
 # Try to load a diffusion pipeline; if unavailable or out-of-disk,
