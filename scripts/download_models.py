@@ -3,16 +3,20 @@ from huggingface_hub import snapshot_download
 
 BASE_DIR = "/workspace/models"
 os.makedirs(BASE_DIR, exist_ok=True)
-os.environ["HF_HOME"] = "/workspace/cache"
+
+# Set HF token in environment if you have one
+HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
+if HF_TOKEN:
+    os.environ["HF_HOME"] = "/workspace/cache"
+    os.environ["HF_HUB_TOKEN"] = HF_TOKEN  # <-- required for private or gated models
 
 MODELS = {
-    "llm": ["eleutherai/pythia-2.8b"],  # smaller than Vicuna-7B
-    "tts": ["coqui/XTTS-v2"],            # 1 GB, okay
-    "sdxl": ["stabilityai/stable-diffusion-xl-base-1.0"],  # smaller than SDXL
-    "animatediff": [],                   # skip if size >1GB
-    "upscalers": ["xinntao/Real-ESRGAN"] # small
+    "llm": ["eleutherai/pythia-2.8b"],  
+    "tts": ["coqui/XTTS-v2"],            
+    "sdxl": ["stabilityai/stable-diffusion-xl-base-1.0"],  
+    "animatediff": [],                   
+    "upscalers": ["xinntao/Real-ESRGAN"] 
 }
-HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 
 def download():
     for category, model_list in MODELS.items():
@@ -25,7 +29,8 @@ def download():
                     category,
                     model.replace("/", "_")
                 ),
-                local_dir_use_symlinks=False
+                local_dir_use_symlinks=False,
+                token=HF_TOKEN  # <-- use token here
             )
 
 if __name__ == "__main__":
