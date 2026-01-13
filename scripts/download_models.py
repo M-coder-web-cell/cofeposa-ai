@@ -8,7 +8,7 @@ os.environ["HF_HOME"] = "/workspace/cache"
 MODELS = {
     "llm": ["eleutherai/pythia-2.8b"],  # smaller than Vicuna-7B
     "tts": ["coqui/XTTS-v2"],            # 1 GB, okay
-    "sdxl": ["stabilityai/stable-diffusion-2-1-base"],  # smaller than SDXL
+    "sdxl": ["stabilityai/stable-diffusion-2-1"],  # smaller than SDXL
     "animatediff": [],                   # skip if size >1GB
     "upscalers": ["xinntao/Real-ESRGAN"] # small
 }
