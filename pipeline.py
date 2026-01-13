@@ -1,26 +1,15 @@
-import os
-from scripts.generate_script import generate_script
-from scripts.generate_image import generate_image
-from scripts.generate_voice import generate_voice
-from scripts.render_video import render_video
+from graph.graph import build_graph
 
-OUTPUT_DIR = "/workspace/outputs"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+if __name__ == "__main__":
+    graph = build_graph()
 
-image_path = f"{OUTPUT_DIR}/image.png"
-audio_path = f"{OUTPUT_DIR}/voice.wav"
-video_path = f"{OUTPUT_DIR}/final.mp4"
+    result = graph.invoke({
+        "title": "",
+        "script": None,
+        "image_path": None,
+        "voice_path": None,
+        "video_path": None,
+        "fps": 24
+    })
 
-print("🧠 Generating script...")
-script = generate_script()
-
-print("🖼️ Generating image...")
-generate_image(image_path)
-
-print("🔊 Generating voice...")
-generate_voice(script, audio_path)
-
-print("🎬 Rendering video...")
-render_video(image_path, audio_path, video_path)
-
-print("🎉 PIPELINE COMPLETE:", video_path)
+    print("🎉 Video generated at:", result["video_path"])
