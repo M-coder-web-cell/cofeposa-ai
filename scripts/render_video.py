@@ -3,7 +3,6 @@ from prompts.prompt import get_prompt
 
 def render_video(image, audio, output):
     fps = get_prompt()["fps"]
-
     subprocess.run([
         "ffmpeg", "-y",
         "-loop", "1", "-i", image,
@@ -16,5 +15,3 @@ def render_video(image, audio, output):
         "-r", str(fps),
         output
     ])
-
-    print(f"🎬 Video rendered → {output}")
