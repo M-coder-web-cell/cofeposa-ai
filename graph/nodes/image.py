@@ -1,8 +1,8 @@
 from scripts.generate_image import generate_image
-from prompts.prompt import get_prompt
+from utils.s3 import upload
 
 def image_node(state):
-    IMAGE_PATH = "/workspace/outputs/image.png"
-    generate_image(IMAGE_PATH)
-    state["image_path"] = IMAGE_PATH
+    local_path = "/tmp/image.png"
+    generate_image(local_path)
+    state["image_path"] = upload(local_path, "images")
     return state
