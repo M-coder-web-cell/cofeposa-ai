@@ -2,7 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from prompts.prompt import get_prompt
 
-MODEL_NAME = "TheBloke/vicuna-3B-HF""
+MODEL_NAME = "mosaicml/mpt-7b-instruct""
 CACHE_DIR = "/workspace/cache"
 
 # Load tokenizer & model from HF repo (automatic caching)
