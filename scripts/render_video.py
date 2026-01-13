@@ -17,4 +17,4 @@ def render_video(image, audio, output):
         output
     ])
 
-    print("🎬 Video rendered")
+    print(f"🎬 Video rendered → {output}")

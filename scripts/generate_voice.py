@@ -1,23 +1,11 @@
-import torch
-from diffusers import StableDiffusionXLPipeline
+from TTS.api import TTS
 from prompts.prompt import get_prompt
 
-BASE = "/workspace/models/sdxl"
-MODEL_PATH = f"{BASE}/stabilityai_stable-diffusion-xl-base-1.0"
+MODEL_NAME = "coqui/XTTS-v2"
+CACHE_DIR = "/workspace/cache"
 
-pipe = StableDiffusionXLPipeline.from_pretrained(
-    MODEL_PATH,
-    torch_dtype=torch.float16
-).to("cuda")
+tts = TTS(model_name=MODEL_NAME, progress_bar=False, gpu=True, cache_path=CACHE_DIR)
 
-def generate_image(output_path):
-    prompt = get_prompt()["image_prompt"]
-
-    image = pipe(
-        prompt=prompt,
-        guidance_scale=7.5,
-        num_inference_steps=30
-    ).images[0]
-
-    image.save(output_path)
-    print("🖼️ Image generated")
+def generate_voice(text, output_path):
+    tts.tts_to_file(text=text, file_path=output_path)
+    print(f"🔊 Voice saved → {output_path}")

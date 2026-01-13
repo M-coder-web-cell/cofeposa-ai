@@ -17,12 +17,10 @@ def build_graph():
     graph.add_node("video", video_node)
 
     graph.set_entry_point("planner")
-
     graph.add_edge("planner", "script")
     graph.add_edge("script", "image")
     graph.add_edge("image", "voice")
     graph.add_edge("voice", "video")
-
     graph.set_finish_point("video")
 
     return graph.compile()

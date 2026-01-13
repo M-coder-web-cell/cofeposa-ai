@@ -2,21 +2,24 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from prompts.prompt import get_prompt
 
-MODEL_PATH = "/workspace/models/llm/meta-llama_Meta-Llama-3-8B-Instruct"
+MODEL_NAME = "meta-llama/Meta-Llama-3-8B-Instruct"
+CACHE_DIR = "/workspace/cache"
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH,local_files_only=True)
+# Load tokenizer & model from HF repo (automatic caching)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir=CACHE_DIR)
 model = AutoModelForCausalLM.from_pretrained(
-    MODEL_PATH,
+    MODEL_NAME,
+    cache_dir=CACHE_DIR,
     torch_dtype=torch.float16,
     device_map="auto"
 )
 
 def generate_script():
-    topic = get_prompt()["topic"]
+    prompt_text = get_prompt()["title"]
 
     prompt = f"""
 Write a dramatic 30 second YouTube narration about:
-{topic}
+{prompt_text}
 """
 
     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
