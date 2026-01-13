@@ -1,17 +1,16 @@
-import os
 import boto3
-from uuid import uuid4
-
-BUCKET = os.environ["S3_BUCKET_NAME"]
+import os
+import uuid
 
 s3 = boto3.client("s3")
+BUCKET = os.environ["S3_BUCKET"]
 
-def upload(local_path: str, prefix: str) -> str:
-    key = f"{prefix}/{uuid4().hex}_{os.path.basename(local_path)}"
+def upload(local_path, folder):
+    key = f"{folder}/{uuid.uuid4()}{os.path.splitext(local_path)[1]}"
     s3.upload_file(local_path, BUCKET, key)
     return f"s3://{BUCKET}/{key}"
 
-def download(s3_uri: str, local_path: str):
-    _, _, path = s3_uri.partition("s3://")
-    bucket, key = path.split("/", 1)
+def download(s3_path, local_path):
+    _, _, bucket_key = s3_path.partition("s3://")
+    bucket, _, key = bucket_key.partition("/")
     s3.download_file(bucket, key, local_path)

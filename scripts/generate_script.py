@@ -2,7 +2,8 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from prompts.prompt import get_prompt
 
-MODEL_PATH = "/workspace/models/llm/meta-llama_Meta-Llama-3-8B-Instruct"
+MODEL_PATH = "/workspace/models/llm/pythia-2.8b"
+
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
 model = AutoModelForCausalLM.from_pretrained(

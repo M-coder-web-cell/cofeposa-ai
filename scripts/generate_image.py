@@ -2,7 +2,8 @@ import torch
 from diffusers import StableDiffusionXLPipeline
 from prompts.prompt import get_prompt
 
-MODEL_PATH = "/workspace/models/sdxl/stabilityai_stable-diffusion-xl-base-1.0"
+MODEL_PATH = "/workspace/models/sd/sd-v1-5"
+
 
 pipe = StableDiffusionXLPipeline.from_pretrained(
     MODEL_PATH,
