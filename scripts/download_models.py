@@ -24,7 +24,7 @@ HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 MODELS = {
     "image": [
         "runwayml/stable-diffusion-v1-5",
-    ],
+    ]
 }
 
 def process_model(category, model_id):
