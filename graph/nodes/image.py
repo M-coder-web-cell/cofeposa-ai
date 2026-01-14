@@ -19,9 +19,7 @@ except Exception:
 # ----------------------------
 CREATIVE_MODELS = [
     "dreamlike-art/dreamlike-diffusion-1.0",  # painterly, surreal
-    "runwayml/stable-diffusion-v1-5",        # classic SD
-    "kandinsky-2-2",                          # abstract/artistic
-    "stabilityai/stable-diffusion-2",         # realistic + creative
+    "runwayml/stable-diffusion-v1-5",        # classic SD         # realistic + creative
     "hakurei/waifu-diffusion"                 # anime/cartoon style
 ]
 

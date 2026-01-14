@@ -23,8 +23,6 @@ MODELS = {
     "image": [
         "runwayml/stable-diffusion-v1-5",
         "dreamlike-art/dreamlike-diffusion-1.0",
-        "kandinsky-2-2",
-        "stabilityai/stable-diffusion-2",
         "hakurei/waifu-diffusion"
     ],
     "video": ["stabilityai/stable-video-diffusion-img2vid"]
