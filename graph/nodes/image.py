@@ -1,7 +1,7 @@
 import os
 from prompts.prompt import get_prompt
 from utils.s3 import download
-from scripts.generate_image import generate_image
+from scripts.generate_image import render_single_shot
 
 TMP_DIR = "/workspace/tmp/images"
 
@@ -25,7 +25,7 @@ def image_node(state):
             download(image_s3, local_image)
         else:
             print(f"🎨 Generating image for shot {idx}")
-            generate_image(local_image, prompt)
+            render_single_shot(local_image, prompt)
 
         state["shots"].append({
             "id": idx,
