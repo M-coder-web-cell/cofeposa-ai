@@ -85,5 +85,5 @@ def render_cinematic_video(state):
         state["video_path"] = output_video
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
-
+    state["video_path"] = "/workspace/tmp/final_video.mp4"
     return state

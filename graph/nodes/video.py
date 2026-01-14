@@ -1,5 +1,6 @@
 from scripts.render_video import render_cinematic_video
 from scripts.generate_voice import generate_voice
+from utils.s3 import upload
 
 TMP_AUDIO = "/workspace/tmp/voice.wav"
 
@@ -10,6 +11,11 @@ def video_node(state):
     # 1️⃣ Generate narration
     generate_voice(state["script"], TMP_AUDIO)
     state["voice_path"] = TMP_AUDIO
+    
+     s3_uri = upload(
+        local_video,
+        f"videos/{title}_{timestamp}"
+    ) 
 
     # 2️⃣ Render cinematic video
     state = render_cinematic_video(state)
