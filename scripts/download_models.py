@@ -18,7 +18,7 @@ HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 # Add creative image models here
 # ------------------------
 MODELS = {
-    "llm": ["mistralai/Mistral-7B-Instruct"],
+    "llm": ["mistral-inference/Mistral-7B-v0.1"],
     "tts": ["coqui/XTTS-v2"],
     "image": [
         "runwayml/stable-diffusion-v1-5",
