@@ -48,14 +48,46 @@ def render_video(image_local, audio_local, output_local):
             # If Pillow operations fail, fall back to using the original image
             image_input = image_local
 
+    # Determine audio duration to drive the Ken-Burns effect length. Fall
+    # back to prompt duration if audio duration can't be read.
+    duration = None
+    try:
+        import wave as _wave
+        with _wave.open(audio_local, "rb") as wf:
+            duration = wf.getnframes() / float(wf.getframerate())
+    except Exception:
+        try:
+            prompt = get_prompt()
+            duration = float(prompt.get("duration", 30))
+        except Exception:
+            duration = 30.0
+
+    nframes = max(1, int(duration * fps))
+
+    # Ken-Burns parameters (can be tuned via env vars)
+    zoom_amount = float(os.environ.get("KB_ZOOM", "0.2"))  # total additional zoom (e.g., 0.2 -> 20%)
+    out_w = int(os.environ.get("VIDEO_W", "1280"))
+    out_h = int(os.environ.get("VIDEO_H", "720"))
+
+    # Build ffmpeg filter_complex for zoompan. We use `n` (frame index)
+    # to compute an increasing zoom from 1 -> 1+zoom_amount over nframes.
+    z_expr = f"1+{zoom_amount}*n/{nframes}"
+    filter_complex = (
+        f"[0:v]scale={out_w}:{out_h},"
+        f"zoompan=z={z_expr}:x=(iw-iw/zoom)/2:y=(ih-ih/zoom)/2:d=1:s={out_w}x{out_h},"
+        f"fps={fps},format=yuv420p[v]"
+    )
+
     ffmpeg_cmd = [
         "ffmpeg", "-y",
         "-loop", "1", "-i", image_input,
         "-i", audio_local,
+        "-filter_complex", filter_complex,
+        "-map", "[v]",
+        "-map", "1:a",
         "-c:v", "libx264",
         "-tune", "stillimage",
         "-c:a", "aac",
-        "-pix_fmt", "yuv420p",
         "-shortest",
         "-r", str(fps),
         output_local
