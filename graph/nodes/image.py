@@ -1,29 +1,36 @@
 import os
 from utils.s3 import download
 from scripts.generate_image import generate_image
+from PIL import Image
+import random
 
 def image_node(state):
     shots = state["shots"]
-    image_paths = []
+    all_shot_frames = []
 
-    os.makedirs("/tmp", exist_ok=True)
+    os.makedirs("/tmp/frames", exist_ok=True)
 
     for i, shot in enumerate(shots):
         prompt = shot["prompt"]
-        output_image = f"/tmp/shot_{i}.png"
+        num_frames = int(shot.get("duration", 3) * state.get("fps", 24))
+        shot_frames = []
 
-        image_s3 = shot.get("image_s3")
-
-        if image_s3:
-            print(f"🖼 Img2Img for shot {i}")
+        # Start from S3 image if provided
+        if shot.get("image_s3"):
             local_input = f"/tmp/input_{i}.png"
-            download(image_s3, local_input)
-            generate_image(local_input, prompt, output_image)
+            download(shot["image_s3"], local_input)
         else:
-            print(f"🎨 Txt2Img for shot {i}")
-            generate_image(None, prompt, output_image)
+            local_input = None
 
-        image_paths.append(output_image)
+        # Generate frames for this shot
+        prev_img = local_input
+        for f in range(num_frames):
+            frame_path = f"/tmp/frames/shot_{i}_frame_{f:04d}.png"
+            generate_image(prev_img, prompt, frame_path)
+            prev_img = frame_path  # evolve next frame from previous for continuity
+            shot_frames.append(frame_path)
 
-    state["image_paths"] = image_paths
+        all_shot_frames.append(shot_frames)
+
+    state["frame_paths"] = all_shot_frames
     return state
