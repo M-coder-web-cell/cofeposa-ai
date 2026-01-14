@@ -5,6 +5,6 @@ def get_prompt():
         "strength": 0.6,
         "fps": 24,
         # Duration in seconds for the final video / narration
-        "duration": 30,
+        "duration":10,
         "topic": "AI taking over humanity"
     }
