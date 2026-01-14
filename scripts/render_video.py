@@ -69,36 +69,70 @@ def render_video(image_local, audio_local, output_local):
     out_w = int(os.environ.get("VIDEO_W", "1280"))
     out_h = int(os.environ.get("VIDEO_H", "720"))
 
-    # Build ffmpeg filter_complex for zoompan. We use `n` (frame index)
-    # to compute an increasing zoom from 1 -> 1+zoom_amount over nframes.
-    # Wrap the zoom expression in single quotes so ffmpeg parses the
-    # arithmetic (e.g. n/{nframes}) correctly when passed via the
-    # command line.
-    z_expr = f"'1+{zoom_amount}*n/{nframes}'"
-    filter_complex = (
-        f"[0:v]scale={out_w}:{out_h},"
-        f"zoompan=z={z_expr}:x=(iw-iw/zoom)/2:y=(ih-ih/zoom)/2:d=1:s={out_w}x{out_h},"
-        f"fps={fps},format=yuv420p[v]"
-    )
-
-    ffmpeg_cmd = [
-        "ffmpeg", "-y",
-        "-loop", "1", "-i", image_input,
-        "-i", audio_local,
-        "-filter_complex", filter_complex,
-        "-map", "[v]",
-        "-map", "1:a",
-        "-c:v", "libx264",
-        "-tune", "stillimage",
-        "-c:a", "aac",
-        "-shortest",
-        "-r", str(fps),
-        output_local
-    ]
-
+    # Generate frames with Pillow (robust) and encode with ffmpeg.
     try:
-        subprocess.run(ffmpeg_cmd, check=True)
+        from PIL import Image
+    except Exception:
+        Image = None
+
+    frames_dir = None
+    try:
+        if Image is not None and os.path.exists(image_input):
+            frames_dir = tempfile.mkdtemp(prefix="kb_frames_")
+            img = Image.open(image_input).convert("RGB")
+            iw, ih = img.size
+
+            for i in range(nframes):
+                t = i / max(1, nframes - 1)
+                zoom = 1.0 + zoom_amount * t
+
+                scaled_w = int(out_w * zoom)
+                scaled_h = int(out_h * zoom)
+
+                scale_factor = max(scaled_w / iw, scaled_h / ih)
+                res_w = max(1, int(iw * scale_factor))
+                res_h = max(1, int(ih * scale_factor))
+                resized = img.resize((res_w, res_h), Image.LANCZOS)
+
+                left = max(0, (res_w - out_w) // 2)
+                top = max(0, (res_h - out_h) // 2)
+                frame = resized.crop((left, top, left + out_w, top + out_h))
+
+                frame_path = os.path.join(frames_dir, f"frame_{i:06d}.png")
+                frame.save(frame_path)
+
+            ffmpeg_cmd = [
+                "ffmpeg", "-y",
+                "-r", str(fps),
+                "-i", os.path.join(frames_dir, "frame_%06d.png"),
+                "-i", audio_local,
+                "-c:v", "libx264",
+                "-pix_fmt", "yuv420p",
+                "-c:a", "aac",
+                "-shortest",
+                "-r", str(fps),
+                output_local
+            ]
+
+            subprocess.run(ffmpeg_cmd, check=True)
+        else:
+            # Fallback: simple ffmpeg without ken-burns
+            ffmpeg_cmd = [
+                "ffmpeg", "-y",
+                "-loop", "1", "-i", image_input,
+                "-i", audio_local,
+                "-c:v", "libx264",
+                "-tune", "stillimage",
+                "-c:a", "aac",
+                "-pix_fmt", "yuv420p",
+                "-shortest",
+                "-r", str(fps),
+                output_local
+            ]
+            subprocess.run(ffmpeg_cmd, check=True)
     finally:
+        if frames_dir:
+            shutil.rmtree(frames_dir, ignore_errors=True)
         if padded_tmp and os.path.exists(padded_tmp):
             try:
                 os.remove(padded_tmp)
