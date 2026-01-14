@@ -5,13 +5,11 @@ from scripts.generate_image import generate_image
 def image_node(state):
     shots = state["shots"]
     image_paths = []
-
     os.makedirs("/tmp", exist_ok=True)
 
     for i, shot in enumerate(shots):
         prompt = shot["prompt"]
         output_image = f"/tmp/shot_{i}.png"
-
         image_s3 = shot.get("image_s3")
 
         if image_s3:
@@ -21,7 +19,7 @@ def image_node(state):
                 download(image_s3, local_input)
                 generate_image(local_input, prompt, output_image)
             except Exception as e:
-                print(f"⚠️ S3 failed, generating instead: {e}")
+                print(f"⚠️ S3 failed, generating placeholder: {e}")
                 generate_image(None, prompt, output_image)
         else:
             print(f"🎨 Generating image for shot {i}")

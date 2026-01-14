@@ -11,7 +11,6 @@ def build_graph():
     graph.add_node("video", video_node)
 
     graph.set_entry_point("prompt")
-
     graph.add_edge("prompt", "image")
     graph.add_edge("image", "video")
 
