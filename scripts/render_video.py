@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 
-def render_single_shot(image_local, audio_local, output_local, title=None):
+def render_cinematic_video(image_local, audio_local, output_local, title=None):
     os.makedirs(os.path.dirname(output_local), exist_ok=True)
 
     fps = get_prompt()["fps"]
