@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from utils.s3 import upload_dir
 
 # Cache paths
-BASE_DIR = os.path.expanduser("~/cofeposa_models")
+BASE_DIR = os.environ.get("COFEPOSA_MODELS", "/workspace/models")
 CACHE_DIR = os.path.expanduser("~/cofeposa_cache")
 os.makedirs(BASE_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
