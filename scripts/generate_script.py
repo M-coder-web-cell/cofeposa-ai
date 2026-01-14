@@ -2,7 +2,7 @@ import os
 from prompts.prompt import get_prompt
 
 # Try to load a local LLM; allow overriding path via `LLM_MODEL_PATH` env var.
-MODEL_PATH = os.environ.get("LLM_MODEL_PATH", "/workspace/models/llm/mistral-inference/Mistral-7B-v0.1")
+MODEL_PATH = os.environ.get("LLM_MODEL_PATH", "/workspace/models/llm/eleutherai_pythia-2.8b")
 
 _USE_STUB = True
 

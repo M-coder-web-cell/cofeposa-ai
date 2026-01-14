@@ -7,18 +7,22 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from utils.s3 import upload_dir
 
 # Cache paths
-os.environ["HF_HOME"] = "/workspace/cache"
-os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/transformers"
-os.environ["DIFFUSERS_CACHE"] = "/workspace/cache/diffusers"
+BASE_DIR = os.path.expanduser("~/cofeposa_models")
+CACHE_DIR = os.path.expanduser("~/cofeposa_cache")
+os.makedirs(BASE_DIR, exist_ok=True)
+os.makedirs(CACHE_DIR, exist_ok=True)
 
-BASE_DIR = "/workspace/models"
+os.environ["HF_HOME"] = CACHE_DIR
+os.environ["TRANSFORMERS_CACHE"] = os.path.join(CACHE_DIR, "transformers")
+os.environ["DIFFUSERS_CACHE"] = os.path.join(CACHE_DIR, "diffusers")
+
 HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 
 # ------------------------
 # Add creative image models here
 # ------------------------
 MODELS = {
-    "llm": ["mistral-inference/Mistral-7B-v0.1"],
+    "llm": ["eleutherai_pythia-2.8b"],
     "tts": ["coqui/XTTS-v2"],
     "image": [
         "runwayml/stable-diffusion-v1-5",
