@@ -22,14 +22,36 @@ def render_video(image_local, audio_local, output_local):
 
     fps = get_prompt()["fps"]
     # Ensure image dimensions are even (width/height divisible by 2) by
-    # padding if necessary. This avoids encoder errors like "width not
-    # divisible by 2" from libx264 when input images have odd sizes.
+    # creating a small padded copy with Pillow if necessary. This avoids
+    # encoder errors like "width not divisible by 2" from libx264 when
+    # input images have odd sizes.
+    try:
+        from PIL import Image
+    except Exception:
+        Image = None
+
+    image_input = image_local
+    padded_tmp = None
+    if Image is not None and os.path.exists(image_local):
+        try:
+            img = Image.open(image_local)
+            w, h = img.size
+            pad_w = w + (w % 2)
+            pad_h = h + (h % 2)
+            if pad_w != w or pad_h != h:
+                padded_tmp = f"{image_local}.padded.png"
+                new_img = Image.new("RGB", (pad_w, pad_h), (0, 0, 0))
+                new_img.paste(img, (0, 0))
+                new_img.save(padded_tmp)
+                image_input = padded_tmp
+        except Exception:
+            # If Pillow operations fail, fall back to using the original image
+            image_input = image_local
+
     ffmpeg_cmd = [
         "ffmpeg", "-y",
-        "-loop", "1", "-i", image_local,
+        "-loop", "1", "-i", image_input,
         "-i", audio_local,
-        # pad width/height to even values if odd
-        "-vf", "pad=iw+mod(iw,2):ih+mod(ih,2)",
         "-c:v", "libx264",
         "-tune", "stillimage",
         "-c:a", "aac",
@@ -39,7 +61,14 @@ def render_video(image_local, audio_local, output_local):
         output_local
     ]
 
-    subprocess.run(ffmpeg_cmd, check=True)
+    try:
+        subprocess.run(ffmpeg_cmd, check=True)
+    finally:
+        if padded_tmp and os.path.exists(padded_tmp):
+            try:
+                os.remove(padded_tmp)
+            except Exception:
+                pass
 
     # Upload to S3 if configured
     if s3 and BUCKET:
