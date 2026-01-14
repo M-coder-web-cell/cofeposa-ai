@@ -3,12 +3,7 @@ import sys
 import shutil
 from huggingface_hub import snapshot_download
 
-# When running this script directly (python scripts/download_models.py),
-# Python's import path will set the working directory to the `scripts` folder,
-# which makes top-level imports like `utils` fail. Ensure project root is on
-# sys.path so `from utils.s3 import upload_dir` works.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 from utils.s3 import upload_dir
 
 # Cache paths
@@ -16,16 +11,22 @@ os.environ["HF_HOME"] = "/workspace/cache"
 os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/transformers"
 os.environ["DIFFUSERS_CACHE"] = "/workspace/cache/diffusers"
 
-# Persist models under `/workspace/models/<category>/<model>` so generator
-# scripts can load them locally. This avoids removing models after download.
 BASE_DIR = "/workspace/models"
 HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 
+# ------------------------
+# Add creative image models here
+# ------------------------
 MODELS = {
     "llm": ["mistralai/Mistral-7B-Instruct"],
     "tts": ["coqui/XTTS-v2"],
-    # Image and video models (use smaller or local alternatives if needed)
-    "image": ["runwayml/stable-diffusion-v1-5"],
+    "image": [
+        "runwayml/stable-diffusion-v1-5",
+        "dreamlike-art/dreamlike-diffusion-1.0",
+        "kandinsky-2-2",
+        "stabilityai/stable-diffusion-2",
+        "hakurei/waifu-diffusion"
+    ],
     "video": ["stabilityai/stable-video-diffusion-img2vid"]
 }
 
@@ -63,4 +64,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
