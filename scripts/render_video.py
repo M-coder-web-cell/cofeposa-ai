@@ -21,22 +21,25 @@ def render_video(image_local, audio_local, output_local):
     os.makedirs(os.path.dirname(output_local), exist_ok=True)
 
     fps = get_prompt()["fps"]
+    # Ensure image dimensions are even (width/height divisible by 2) by
+    # padding if necessary. This avoids encoder errors like "width not
+    # divisible by 2" from libx264 when input images have odd sizes.
+    ffmpeg_cmd = [
+        "ffmpeg", "-y",
+        "-loop", "1", "-i", image_local,
+        "-i", audio_local,
+        # pad width/height to even values if odd
+        "-vf", "pad=iw+mod(iw,2):ih+mod(ih,2)",
+        "-c:v", "libx264",
+        "-tune", "stillimage",
+        "-c:a", "aac",
+        "-pix_fmt", "yuv420p",
+        "-shortest",
+        "-r", str(fps),
+        output_local
+    ]
 
-    subprocess.run(
-        [
-            "ffmpeg", "-y",
-            "-loop", "1", "-i", image_local,
-            "-i", audio_local,
-            "-c:v", "libx264",
-            "-tune", "stillimage",
-            "-c:a", "aac",
-            "-pix_fmt", "yuv420p",
-            "-shortest",
-            "-r", str(fps),
-            output_local
-        ],
-        check=True
-    )
+    subprocess.run(ffmpeg_cmd, check=True)
 
     # Upload to S3 if configured
     if s3 and BUCKET:
