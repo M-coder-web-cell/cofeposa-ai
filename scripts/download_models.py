@@ -20,12 +20,11 @@ BASE_DIR = "/workspace/tmp_model"
 HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 
 MODELS = {
-    "llm": ["eleutherai/pythia-2.8b"],
+    "llm": ["mistralai/Mistral-7B-Instruct"],
     "tts": ["coqui/XTTS-v2"],
-    # Use a small public image model by default to avoid large downloads
-    # on limited disk environments. Replace with a larger SD model if you
-    # have the space and access.
-    "sd":  ["google/ddpm-celebahq-256"]
+    # Image and video models (use smaller or local alternatives if needed)
+    "image": ["runwayml/stable-diffusion-v1-5"],
+    "video": ["stabilityai/stable-video-diffusion-img2vid"]
 }
 
 def process_model(category, model_id):
