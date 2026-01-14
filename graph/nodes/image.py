@@ -1,37 +1,40 @@
 import os
-from prompts.prompt import get_prompt
 from utils.s3 import download
-from scripts.generate_image import render_single_shot
-
-TMP_DIR = "/workspace/tmp/images"
+from scripts.render_image import render_single_shot
 
 def image_node(state):
-    prompt_data = get_prompt()
-    shots = prompt_data.get("shots", [])
+    shots = state["shots"]
+    images = []
 
-    os.makedirs(TMP_DIR, exist_ok=True)
+    os.makedirs("/tmp", exist_ok=True)
 
-    state["shots"] = []
-
-    for idx, shot in enumerate(shots):
+    for i, shot in enumerate(shots):
         prompt = shot["prompt"]
-        duration = shot.get("duration", 3)
+        duration = shot["duration"]
+
+        output_image = f"/tmp/shot_{i}.png"
+
+        # If S3 image exists for this shot
         image_s3 = shot.get("image_s3")
-
-        local_image = os.path.join(TMP_DIR, f"shot_{idx}.png")
-
         if image_s3:
-            print(f"🖼 Using S3 image for shot {idx}")
-            download(image_s3, local_image)
+            print(f"🖼 Using S3 image for shot {i}")
+            local_input = f"/tmp/input_{i}.png"
+            try:
+                download(image_s3, local_input)
+                render_single_shot(local_input, prompt, output_image)
+            except Exception as e:
+                print(f"⚠️ S3 failed, generating instead: {e}")
+                render_single_shot(None, prompt, output_image)
         else:
-            print(f"🎨 Generating image for shot {idx}")
-            render_single_shot(local_image, prompt)
+            print(f"🎨 Generating image for shot {i}")
+            render_single_shot(None, prompt, output_image)
 
-        state["shots"].append({
-            "id": idx,
-            "image": local_image,
-            "duration": duration,
-            "prompt": prompt
+        images.append({
+            "path": output_image,
+            "duration": duration
         })
 
-    return state
+    return {
+        **state,
+        "images": images
+    }
