@@ -7,7 +7,7 @@ def get_prompt():
             {
                 "prompt": "Cinematic futuristic megacity, neon lights, AI core",
                 "duration": 4,
-                "image_s3": "s3://cofeposa-ai/images/megacity.png"  # optional
+                "image_s3": "s3://cofeposa-ai/images/endofhumanity.jpeg"  # optional
             },
             {
                 "prompt": "AI control room with holographic screens",
