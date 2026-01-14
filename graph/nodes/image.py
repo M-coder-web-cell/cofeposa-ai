@@ -1,6 +1,6 @@
 import os
 from utils.s3 import download
-from scripts.render_image import render_single_shot
+from scripts.generate_image import render_single_shot
 
 def image_node(state):
     shots = state["shots"]
