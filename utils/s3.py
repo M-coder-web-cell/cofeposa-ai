@@ -88,3 +88,20 @@ def download(s3_uri_or_local, local_path):
     os.makedirs(os.path.dirname(local_path), exist_ok=True)
     s3.download_file(bucket, key, local_path)
     return local_path
+def upload_fileobj(fileobj, s3_key, bucket=None):
+    """
+    Upload a file-like object directly to S3 (no local disk).
+    Used for streaming downloads (HF → S3).
+    """
+    if not S3_ENABLED:
+        raise RuntimeError("S3 upload skipped (S3_BUCKET not set)")
+
+    bucket = bucket or BUCKET
+
+    s3.upload_fileobj(
+        Fileobj=fileobj,
+        Bucket=bucket,
+        Key=s3_key
+    )
+
+    return f"s3://{bucket}/{s3_key}"
