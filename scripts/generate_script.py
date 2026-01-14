@@ -1,8 +1,8 @@
 import os
 from prompts.prompt import get_prompt
 
-# Try to load a local LLM; if unavailable, fall back to a simple stub.
-MODEL_PATH = "/workspace/models/llm/pythia-2.8b"
+# Try to load a local LLM; allow overriding path via `LLM_MODEL_PATH` env var.
+MODEL_PATH = os.environ.get("LLM_MODEL_PATH", "/workspace/models/llm/mistralai_Mistral-7B-Instruct")
 
 _USE_STUB = False
 try:

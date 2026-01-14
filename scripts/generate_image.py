@@ -2,13 +2,15 @@ import os
 from prompts.prompt import get_prompt
 
 # Try to load a diffusion pipeline; if unavailable or out-of-disk,
-# create a simple placeholder image using Pillow.
+# create a simple placeholder image using Pillow. The SD model path can be
+# overridden with `SD_MODEL_PATH` env var. Default matches the downloader
+# location for the `runwayml/stable-diffusion-v1-5` model.
 _USE_PLACEHOLDER = False
 try:
     import torch
     from diffusers import StableDiffusionPipeline
 
-    MODEL_PATH = "/workspace/models/sd/sd-v1-5"
+    MODEL_PATH = os.environ.get("SD_MODEL_PATH", "/workspace/models/image/runwayml_stable-diffusion-v1-5")
 
     pipe = StableDiffusionPipeline.from_pretrained(
         MODEL_PATH,

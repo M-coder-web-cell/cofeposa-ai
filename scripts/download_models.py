@@ -16,7 +16,9 @@ os.environ["HF_HOME"] = "/workspace/cache"
 os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/transformers"
 os.environ["DIFFUSERS_CACHE"] = "/workspace/cache/diffusers"
 
-BASE_DIR = "/workspace/tmp_model"
+# Persist models under `/workspace/models/<category>/<model>` so generator
+# scripts can load them locally. This avoids removing models after download.
+BASE_DIR = "/workspace/models"
 HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 
 MODELS = {
@@ -28,7 +30,7 @@ MODELS = {
 }
 
 def process_model(category, model_id):
-    local_dir = f"{BASE_DIR}/{model_id.replace('/', '_')}"
+    local_dir = os.path.join(BASE_DIR, category, model_id.replace('/', '_'))
     s3_prefix = f"models/{category}/{model_id.replace('/', '_')}"
 
     print(f"\n⬇ Downloading {model_id}")
@@ -50,11 +52,7 @@ def process_model(category, model_id):
     except Exception as e:
         print(f"⚠️ Upload failed for {model_id}: {e}")
 
-    print(f"🧹 Cleaning local files for {model_id}")
-    try:
-        shutil.rmtree(local_dir)
-    except Exception:
-        pass
+    print(f"📁 Kept local model files at {local_dir}")
 
 def main():
     for category, models in MODELS.items():
