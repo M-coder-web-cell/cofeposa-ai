@@ -24,10 +24,7 @@ HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 MODELS = {
     "image": [
         "runwayml/stable-diffusion-v1-5",
-        "dreamlike-art/dreamlike-diffusion-1.0",
-        "hakurei/waifu-diffusion"
     ],
-    "video": ["stabilityai/stable-video-diffusion-img2vid"]
 }
 
 def process_model(category, model_id):
