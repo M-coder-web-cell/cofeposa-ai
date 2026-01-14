@@ -71,7 +71,10 @@ def render_video(image_local, audio_local, output_local):
 
     # Build ffmpeg filter_complex for zoompan. We use `n` (frame index)
     # to compute an increasing zoom from 1 -> 1+zoom_amount over nframes.
-    z_expr = f"1+{zoom_amount}*n/{nframes}"
+    # Wrap the zoom expression in single quotes so ffmpeg parses the
+    # arithmetic (e.g. n/{nframes}) correctly when passed via the
+    # command line.
+    z_expr = f"'1+{zoom_amount}*n/{nframes}'"
     filter_complex = (
         f"[0:v]scale={out_w}:{out_h},"
         f"zoompan=z={z_expr}:x=(iw-iw/zoom)/2:y=(ih-ih/zoom)/2:d=1:s={out_w}x{out_h},"
