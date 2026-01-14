@@ -1,16 +1,18 @@
 from scripts.render_video import render_cinematic_video
-from utils.s3 import download, upload
+from scripts.generate_voice import generate_voice
+from scripts.image_node import image_node
 
-TMP_IMAGE = "/workspace/tmp/image.png"
 TMP_AUDIO = "/workspace/tmp/voice.wav"
-TMP_VIDEO = "/workspace/tmp/final.mp4"
 
 def video_node(state):
-    download(state["image_path"], TMP_IMAGE)
-    download(state["voice_path"], TMP_AUDIO)
+    # 1️⃣ Generate narration
+    generate_voice(state["script"], TMP_AUDIO)
+    state["voice_path"] = TMP_AUDIO
 
-    title = state.get("title", None)
-    render_cinematic_video(TMP_IMAGE, TMP_AUDIO, TMP_VIDEO, title=title)
+    # 2️⃣ Generate images per shot
+    state = image_node(state)
 
-    state["video_path"] = upload(TMP_VIDEO, "videos")
+    # 3️⃣ Render final cinematic video
+    state = render_cinematic_video(state)
+
     return state
