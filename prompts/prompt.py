@@ -1,26 +1,22 @@
 def get_prompt():
-    """
-    Returns the main prompt configuration for cinematic video generation.
-    Supports multiple shots with individual prompts and durations.
-    """
     return {
         "title": "AI Predicts the End of Humanity",
-        "fps": 24,  # frames per second for video
+        "fps": 24,
         "topic": "AI taking over humanity",
         "shots": [
             {
                 "prompt": "Cinematic futuristic megacity, neon lights, AI core",
-                "duration": 4  # duration in seconds for this shot
+                "duration": 4,
+                "image_s3": "s3://cofeposa-ai/images/megacity.png"  # optional
             },
             {
-                "prompt": "AI control room with holographic screens, glowing data streams",
+                "prompt": "AI control room with holographic screens",
                 "duration": 3
             },
             {
-                "prompt": "Robots walking through dark city streets, foggy atmosphere",
+                "prompt": "Robots walking through dark city streets, fog",
                 "duration": 3
             }
         ],
-        # Total duration in seconds (sum of all shots)
         "duration": 10
     }
