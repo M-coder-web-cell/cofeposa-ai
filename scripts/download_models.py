@@ -22,8 +22,6 @@ HF_TOKEN = os.environ.get("HUGGINGFACE_HUB_TOKEN")
 # Add creative image models here
 # ------------------------
 MODELS = {
-    "llm": ["EleutherAI/pythia-2.8b"],
-    "tts": ["coqui/XTTS-v2"],
     "image": [
         "runwayml/stable-diffusion-v1-5",
         "dreamlike-art/dreamlike-diffusion-1.0",
