@@ -1,34 +1,9 @@
-import subprocess
-import os
-import tempfile
-import shutil
-from prompts.prompt import get_prompt
-from scripts.generate_shots import generate_shots
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 
-try:
-    import boto3
-    _HAS_BOTO3 = True
-except Exception:
-    boto3 = None
-    _HAS_BOTO3 = False
-
-BUCKET = os.environ.get("S3_BUCKET")
-
-if _HAS_BOTO3 and BUCKET:
-    s3 = boto3.client("s3")
-else:
-    s3 = None
-
-
-# ============================================================
-# LOW-LEVEL: single-shot renderer (NO recursion, SAFE)
-# ============================================================
-def render_single_shot(image_local, audio_local, output_local):
+def render_single_shot(image_local, audio_local, output_local, title=None):
     os.makedirs(os.path.dirname(output_local), exist_ok=True)
 
     fps = get_prompt()["fps"]
-
-    from PIL import Image
 
     # determine duration from audio
     try:
@@ -61,10 +36,29 @@ def render_single_shot(image_local, audio_local, output_local):
             rw, rh = int(iw * scale), int(ih * scale)
 
             resized = img.resize((rw, rh), Image.LANCZOS)
+
+            # Subtle rotation (-0.5 to +0.5 degrees)
+            angle = (t - 0.5) * 1.0
+            rotated = resized.rotate(angle, resample=Image.BICUBIC, expand=False)
+
             left = (rw - out_w) // 2
             top = (rh - out_h) // 2
+            frame = rotated.crop((left, top, left + out_w, top + out_h))
 
-            frame = resized.crop((left, top, left + out_w, top + out_h))
+            # Color grading: brightness + contrast + saturation
+            frame = ImageEnhance.Brightness(frame).enhance(1.05)
+            frame = ImageEnhance.Contrast(frame).enhance(1.1)
+            frame = ImageEnhance.Color(frame).enhance(1.2)
+
+            # Title overlay in first 40 frames
+            if title and i < 40:
+                draw = ImageDraw.Draw(frame)
+                try:
+                    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 48)
+                except Exception:
+                    font = ImageFont.load_default()
+                draw.text((50, 50), title, fill=(255, 255, 255), font=font)
+
             frame.save(os.path.join(frames_dir, f"frame_{i:06d}.png"))
 
         subprocess.run([
@@ -83,56 +77,3 @@ def render_single_shot(image_local, audio_local, output_local):
         shutil.rmtree(frames_dir, ignore_errors=True)
 
     return output_local
-
-
-# ============================================================
-# HIGH-LEVEL: cinematic multi-shot renderer
-# ============================================================
-def render_cinematic_video(image_local, audio_local, output_local):
-    shots = generate_shots()
-    tmp_dir = tempfile.mkdtemp(prefix="cinematic_")
-    clips = []
-
-    try:
-        for idx, shot in enumerate(shots):
-            shot_out = os.path.join(tmp_dir, f"shot_{idx}.mp4")
-
-            os.environ["KB_ZOOM"] = str(
-                shot["end_zoom"] - shot["start_zoom"]
-            )
-
-            render_single_shot(
-                image_local=image_local,
-                audio_local=audio_local,
-                output_local=shot_out
-            )
-
-            clips.append(shot_out)
-
-        concat_file = os.path.join(tmp_dir, "concat.txt")
-        with open(concat_file, "w") as f:
-            for c in clips:
-                f.write(f"file '{c}'\n")
-
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-f", "concat",
-            "-safe", "0",
-            "-i", concat_file,
-            "-i", audio_local,
-            "-c:v", "libx264",
-            "-c:a", "aac",
-            "-shortest",
-            output_local
-        ], check=True)
-
-    finally:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-
-    return output_local
-
-
-__all__ = [
-    "render_single_shot",
-    "render_cinematic_video",
-]

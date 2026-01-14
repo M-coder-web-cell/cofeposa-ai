@@ -9,7 +9,8 @@ def video_node(state):
     download(state["image_path"], TMP_IMAGE)
     download(state["voice_path"], TMP_AUDIO)
 
-    render_cinematic_video(TMP_IMAGE, TMP_AUDIO, TMP_VIDEO)
+    title = state.get("title", None)
+    render_cinematic_video(TMP_IMAGE, TMP_AUDIO, TMP_VIDEO, title=title)
 
     state["video_path"] = upload(TMP_VIDEO, "videos")
     return state
