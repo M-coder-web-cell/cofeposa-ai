@@ -1,0 +1,17 @@
+camera:
+  - cinematic close-up
+  - drone shot
+  - wide angle lens
+  - low angle shot
+
+lighting:
+  - volumetric lighting
+  - neon rim light
+  - soft ambient light
+  - dramatic shadows
+
+mood:
+  - epic
+  - melancholic
+  - futuristic
+  - surreal

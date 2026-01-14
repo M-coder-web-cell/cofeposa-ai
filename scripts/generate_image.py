@@ -1,16 +1,36 @@
-import os
+import random
 from PIL import Image
+from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
+from scripts.model_registry import get_pipeline
+from prompts.creative_router import choose_model, enrich_prompt
 
-def generate_image(image_local: str | None, prompt: str, output_local: str):
-    os.makedirs(os.path.dirname(output_local), exist_ok=True)
+def generate_image(input_image, prompt, output_path):
+    model = choose_model(prompt)
+    final_prompt = enrich_prompt(prompt)
 
-    if image_local:
-        try:
-            img = Image.open(image_local).convert("RGB")
-        except Exception:
-            img = Image.new("RGB", (1280, 720), color=(20,20,20))
+    if input_image:
+        # 🔁 IMG2IMG (photo → creative)
+        pipe = get_pipeline(model["id"], mode="img2img")
+
+        init_image = Image.open(input_image).convert("RGB").resize((512, 512))
+
+        image = pipe(
+            prompt=final_prompt,
+            image=init_image,
+            strength=random.uniform(*model["strength"]),
+            guidance_scale=random.uniform(*model["guidance"]),
+            num_inference_steps=30
+        ).images[0]
+
     else:
-        img = Image.new("RGB", (1280, 720), color=(20,20,20))
+        # 🎨 TXT2IMG (no photo)
+        pipe = get_pipeline(model["id"], mode="txt2img")
 
-    img.save(output_local)
-    return output_local
+        image = pipe(
+            prompt=final_prompt,
+            guidance_scale=random.uniform(*model["guidance"]),
+            num_inference_steps=30
+        ).images[0]
+
+    image.save(output_path)
+    return output_path
