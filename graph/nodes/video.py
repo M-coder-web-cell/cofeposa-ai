@@ -50,7 +50,7 @@ def video_node(state):
     subprocess.run([
         "ffmpeg", "-y",
         "-framerate", str(fps),
-        "-i", f"{TMP_DIR}/frames/shot_%d_frame_%04d.png",
+        "-i", f"{TMP_DIR}/frames/frame_%06d.png",
         "-i", voice_path,
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
@@ -69,4 +69,3 @@ def video_node(state):
     print(f"🚀 Final video: {s3_uri}")
 
     return state
-
