@@ -14,7 +14,8 @@
 - [x] 10. Fix graph/state.py - add missing fields (shots, frame_paths, voice_s3_uri)
 - [x] 11. Fix scripts/render_video.py - change /workspace/tmp/ to /tmp/cofeposa/
 - [x] 12. Fix prompts/prompt.py - use absolute path for image_s3 (file:// scheme)
-- [x] 13. Syntax validation passed for all Python files
+- [x] 13. Fix scripts/generate_voice.py - remove unsupported --duration argument from TTS command
+- [x] 14. Syntax validation passed for all Python files
 
-## All Issues Fixed! 🎉
+## Pipeline Successfully Tested! 🎉
 

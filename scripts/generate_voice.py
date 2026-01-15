@@ -11,16 +11,8 @@ def generate_voice(text, output_local, duration=None):
     os.makedirs(os.path.dirname(output_local), exist_ok=True)
 
     try:
-        # Use TTS with duration parameter if provided
-        if duration:
-            subprocess.run([
-                "tts", 
-                "--text", text, 
-                "--out_path", output_local,
-                "--duration", str(duration)
-            ], check=True)
-        else:
-            subprocess.run(["tts", "--text", text, "--out_path", output_local], check=True)
+        # TTS command without --duration (not supported by all TTS engines)
+        subprocess.run(["tts", "--text", text, "--out_path", output_local], check=True)
         return output_local
     except Exception as e:
         print(f"⚠️ TTS failed ({e}), generating silent audio")
