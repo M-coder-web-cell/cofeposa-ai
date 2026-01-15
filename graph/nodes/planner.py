@@ -1,7 +1,2 @@
-from prompts.prompt import get_prompt
+# Unused node - planner functionality is handled by prompt_node
 
-def planner_node(state):
-    prompt = get_prompt()
-    state["title"] = prompt["title"]
-    state["fps"] = prompt["fps"]
-    return state

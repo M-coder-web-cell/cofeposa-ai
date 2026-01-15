@@ -5,28 +5,47 @@ from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
 from scripts.model_registry import get_pipeline
 from prompts.creative_router import choose_model, enrich_prompt
 
-def generate_image(input_image, prompt, output_path):
+# Camera motion hints for temporal variation
+CAMERA_MOTIONS = [
+    "slow pan left",
+    "slow pan right",
+    "gentle push in",
+    "gentle pull back",
+    "slow tilt up",
+    "slow tilt down",
+    "static shot",
+    "slight tracking shot",
+]
+
+def generate_image(input_image, prompt, output_path, frame_num=0, total_frames=1):
     try:
         model = choose_model(prompt)
-        final_prompt = enrich_prompt(prompt)
-        print(f"    🎨 Model: {model['id']}, Prompt: {final_prompt[:50]}...")
+        
+        # Add temporal variation based on frame position
+        motion_hint = CAMERA_MOTIONS[frame_num % len(CAMERA_MOTIONS)]
+        final_prompt = enrich_prompt(prompt, frame_num, total_frames, motion_hint)
+        
+        print(f"    🎨 Model: {model['id']}, Frame: {frame_num}/{total_frames}")
+        print(f"    📝 Prompt: {final_prompt[:60]}...")
 
         # Check if input_image exists, otherwise fall back to txt2img
         img_exists = input_image and os.path.exists(input_image)
-        print(f"    📷 Input image exists: {img_exists} ({input_image})")
 
         if img_exists:
-            # 🔁 IMG2IMG (photo → creative)
+            # 🔁 IMG2IMG (photo → creative) - use lower strength for subtle evolution
             pipe = get_pipeline(model["id"], mode="img2img")
 
             init_image = Image.open(input_image).convert("RGB").resize((512, 512))
 
+            # Lower strength for gradual evolution, higher for keyframes
+            strength = 0.35 if frame_num > 0 else 0.65
+            
             image = pipe(
                 prompt=final_prompt,
                 image=init_image,
-                strength=random.uniform(*model["strength"]),
+                strength=strength,
                 guidance_scale=random.uniform(*model["guidance"]),
-                num_inference_steps=20  # Reduced from 30 for faster execution
+                num_inference_steps=25
             ).images[0]
 
         else:
@@ -36,7 +55,7 @@ def generate_image(input_image, prompt, output_path):
             image = pipe(
                 prompt=final_prompt,
                 guidance_scale=random.uniform(*model["guidance"]),
-                num_inference_steps=25  # Reduced from 30 for faster execution
+                num_inference_steps=25
             ).images[0]
 
         # Ensure output directory exists
@@ -50,3 +69,4 @@ def generate_image(input_image, prompt, output_path):
         import traceback
         traceback.print_exc()
         raise
+

@@ -1,5 +1,2 @@
-from scripts.generate_script import generate_script
+# Unused node - script generation is handled by prompts/prompt.py
 
-def script_node(state):
-    state["script"] = generate_script()
-    return state

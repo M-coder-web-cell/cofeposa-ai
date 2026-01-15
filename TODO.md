@@ -2,22 +2,61 @@
 
 ## Completed ✓
 
-- [x] 1. Uncomment TTS in requirements.txt (added `coqui-tts`)
-- [x] 2. Fix image extension (jpeg → jpg) in prompts/prompt.py
-- [x] 3. Add voice node to graph (update graph.py) - now: prompt → image → voice → video
-- [x] 4. Fix frame flattening in video_node (nested list → flat list)
-- [x] 5. Fix /workspace/tmp/ paths to use /tmp/ instead (in video.py, voice.py, s3.py)
-- [x] 6. Fix config file paths in model_registry.py and creative_router.py (use absolute paths)
-- [x] 7. Create TMP_DIR and ensure directories exist with os.makedirs()
-- [x] 8. Fix syntax error in s3.py (missing `import` keyword)
-- [x] 9. Fix graph/graph.py - use VideoState type instead of dict, import from graph.state
-- [x] 10. Fix graph/state.py - add missing fields (shots, frame_paths, voice_s3_uri)
-- [x] 11. Fix scripts/render_video.py - change /workspace/tmp/ to /tmp/cofeposa/
-- [x] 12. Fix prompts/prompt.py - use absolute path for image_s3 (file:// scheme)
-- [x] 13. Fix scripts/generate_voice.py - remove unsupported --duration argument from TTS command
-- [x] 14. Fix graph/nodes/image.py - add comprehensive logging and error handling for image generation
-- [x] 15. Fix scripts/generate_image.py - add logging and error handling for SD pipeline
-- [x] 16. Syntax validation passed for all Python files
+### YAML Fixes
+- [x] Fix invalid YAML in creativity.yaml (removed merged `from typing import` section)
+- [x] Ensure yaml.safe_load works correctly
 
-## Pipeline Successfully Tested! 🎉
+### State Schema Fixes  
+- [x] VideoState accurately reflects runtime state
+- [x] Removed unused `image_path` key
+- [x] Kept `frame_paths` as canonical image output
+- [x] Added `shots`, `voice_s3_uri` keys
+
+### Dead Code Removal
+- [x] Removed legacy `render_cinematic_video` and `render_single_shot` from render_video.py
+- [x] Disabled unused `planner_node` (marked as unused)
+- [x] Disabled unused `generate_script.py` (marked as unused)
+- [x] Disabled unused `generate_shots.py` (marked as unused)
+- [x] Empty placeholder for graph/nodes/script.py
+
+### FFmpeg Concat Fix
+- [x] Fixed video_node to use `-f concat -safe 0` 
+- [x] concat.txt now treated as concat demuxer format
+- [x] Added validation for empty frames list
+
+### Frame Evolution Quality
+- [x] Added KEYFRAME_INTERVAL (8 frames) to prevent img2img degradation
+- [x] Every 8th frame uses txt2img for fresh output
+- [x] Lower img2img strength (0.35) for gradual evolution
+- [x] Higher strength (0.65) for keyframes
+
+### Prompt Variation
+- [x] Added camera motion hints per frame (slow pan, push in, tilt, etc.)
+- [x] enrich_prompt now accepts frame_num, total_frames, motion_hint
+- [x] Temporal variation: "wide establishing shot", "transitioning view", "final composition"
+- [x] Each frame gets unique camera/lighting/mood combo
+
+### Pipeline Stability
+- [x] Enabled attention slicing
+- [x] Enabled VAE tiling  
+- [x] Safe xformers fallback with warning
+- [x] Added proper dtype handling (float16 for CUDA, float32 for CPU)
+- [x] Comprehensive logging at each step
+
+### Graph Correctness
+- [x] LangGraph flow: prompt → image → voice → video
+- [x] Only 4 active nodes (prompt, image, voice, video)
+- [x] Unused nodes (planner, script) disabled
+
+### Config Consistency
+- [x] Model selection works via creative_router
+- [x] Creativity config loads correctly
+- [x] Prompt enrichment adds temporal variation
+- [x] Single source of truth: prompts/prompt.py
+
+## Final Expected Behavior ✓
+- Each shot generates multiple evolving frames
+- Frames stitched into single cinematic MP4
+- Audio correctly synced
+- No black frames, no silent failures, no broken YAML
 

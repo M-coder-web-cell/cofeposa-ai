@@ -20,16 +20,20 @@ def video_node(state):
     print(f"📊 Video: {total_frames} frames at {fps} fps = {video_duration:.2f} seconds")
     print(f"🎵 Audio: {voice_path}")
 
-    # Create concat file
+    if not all_frames:
+        raise ValueError("No frames to process - image generation may have failed")
+
+    # Create concat file for image sequence
     concat_txt = f"{TMP_DIR}/concat.txt"
     with open(concat_txt, "w") as f:
         for frame in all_frames:
             f.write(f"file '{frame}'\n")
 
-    # Build video with audio (NO re-encoding voice - use as-is)
+    # Build video from images using concat demuxer
     subprocess.run([
         "ffmpeg", "-y",
-        "-framerate", str(fps),
+        "-f", "concat",
+        "-safe", "0",
         "-i", concat_txt,
         "-i", voice_path,
         "-c:v", "libx264",
@@ -37,7 +41,7 @@ def video_node(state):
         "-preset", "fast",
         "-r", str(fps),
         "-c:a", "aac",
-        "-shortest",  # Stop when shorter input ends
+        "-shortest",
         OUTPUT_VIDEO
     ], check=True)
 
