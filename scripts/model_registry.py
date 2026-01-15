@@ -1,5 +1,10 @@
+import os
 import torch
 from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
+
+# Get the directory of this script for config paths
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIGS_DIR = os.path.join(SCRIPT_DIR, "..", "configs")
 
 _PIPELINES = {}
 
@@ -21,3 +26,4 @@ def get_pipeline(model_id, mode="txt2img"):
         _PIPELINES[key] = pipe
 
     return _PIPELINES[key]
+

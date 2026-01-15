@@ -16,6 +16,10 @@ if S3_ENABLED and boto3 is not None:
 else:
     s3 = None
 
+# Use /tmp/ for temporary files (works on macOS and Linux)
+TMP_DIR = "/tmp/cofeposa"
+os.makedirs(TMP_DIR, exist_ok=True)
+
 
 def upload_dir(local_dir, s3_prefix):
     if not S3_ENABLED:
@@ -88,6 +92,8 @@ def download(s3_uri_or_local, local_path):
     os.makedirs(os.path.dirname(local_path), exist_ok=True)
     s3.download_file(bucket, key, local_path)
     return local_path
+
+
 def upload_fileobj(fileobj, s3_key, bucket=None):
     """
     Upload a file-like object directly to S3 (no local disk).
@@ -105,3 +111,4 @@ def upload_fileobj(fileobj, s3_key, bucket=None):
     )
 
     return f"s3://{bucket}/{s3_key}"
+

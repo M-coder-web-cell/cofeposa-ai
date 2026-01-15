@@ -1,10 +1,15 @@
+import os
 import random
 import yaml
 
-with open("configs/models.yaml") as f:
+# Get the directory of this script for config paths
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIGS_DIR = os.path.join(SCRIPT_DIR, "..", "configs")
+
+with open(os.path.join(CONFIGS_DIR, "models.yaml")) as f:
     MODELS = yaml.safe_load(f)["models"]
 
-with open("configs/creativity.yaml") as f:
+with open(os.path.join(CONFIGS_DIR, "creativity.yaml")) as f:
     CREATIVE = yaml.safe_load(f)
 
 def choose_model(prompt: str):
@@ -21,3 +26,4 @@ def enrich_prompt(base_prompt: str):
     mood = random.choice(CREATIVE["mood"])
 
     return f"{base_prompt}, {camera}, {lighting}, {mood}, ultra detailed"
+

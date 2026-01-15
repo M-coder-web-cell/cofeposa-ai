@@ -5,7 +5,9 @@ from utils.s3 import upload
 from scripts.generate_voice import generate_voice
 from datetime import datetime
 
-TMP_AUDIO = "/workspace/tmp/voice.wav"
+# Use /tmp/ for temporary files (works on macOS and Linux)
+TMP_DIR = "/tmp/cofeposa"
+TMP_AUDIO = f"{TMP_DIR}/voice.wav"
 
 def video_node(state):
     # 1️⃣ Ensure script exists
@@ -13,19 +15,21 @@ def video_node(state):
         state["script"] = " ".join([shot["prompt"] for shot in state.get("shots", [])])
 
     # 2️⃣ Generate voice
+    os.makedirs(TMP_DIR, exist_ok=True)
     generate_voice(state["script"], TMP_AUDIO)
     state["voice_path"] = TMP_AUDIO
 
-    # 3️⃣ Assemble frames per shot
+    # 3️⃣ Assemble frames per shot (flatten nested frame_paths list)
     tmp_dir = tempfile.mkdtemp(prefix="cinematic_")
     concat_txt = os.path.join(tmp_dir, "concat.txt")
     with open(concat_txt, "w") as f:
-        for shot_frames in state["frame_paths"]:
-            for frame in shot_frames:
-                f.write(f"file '{frame}'\n")
+        # Flatten nested list: [[shot1_frames], [shot2_frames]] -> [frame1, frame2, ...]
+        all_frames = [frame for shot_frames in state.get("frame_paths", []) for frame in shot_frames]
+        for frame in all_frames:
+            f.write(f"file '{frame}'\n")
 
     # 4️⃣ Render final video
-    output_video = "/workspace/tmp/final_video.mp4"
+    output_video = f"{TMP_DIR}/final_video.mp4"
     subprocess.run([
         "ffmpeg", "-y",
         "-f", "concat", "-safe", "0",
@@ -45,3 +49,4 @@ def video_node(state):
     print(f"🚀 Final video uploaded to: {s3_uri}")
 
     return state
+

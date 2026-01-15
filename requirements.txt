@@ -7,7 +7,7 @@ safetensors
 huggingface_hub
 
 # 🎙️ Text-to-Speech
-# TTS
+coqui-tts
 
 # 🎬 Video
 ffmpeg-python
