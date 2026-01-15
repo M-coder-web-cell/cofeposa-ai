@@ -14,6 +14,7 @@ KEYFRAME_INTERVAL = 8
 def image_node(state):
     shots = state["shots"]
     all_shot_frames = []
+    frame_counter = 0  # Sequential counter for all frames
 
     for i, shot in enumerate(shots):
         base_prompt = shot["prompt"]
@@ -39,7 +40,8 @@ def image_node(state):
         keyframe_count = 0
         
         for f in range(num_frames):
-            frame_path = f"{FRAMES_DIR}/shot_{i}_frame_{f:04d}.png"
+            # Use sequential naming for ffmpeg image2 demuxer
+            frame_path = f"{FRAMES_DIR}/frame_{frame_counter:06d}.png"
             
             # Keyframe logic: every KEYFRAME_INTERVAL frames, use txt2img for fresh output
             is_keyframe = (f % KEYFRAME_INTERVAL == 0) or (prev_img is None)
@@ -58,6 +60,7 @@ def image_node(state):
                     img.verify()  # Verify it's a valid image
                     prev_img = frame_path  # evolve next frame from previous for continuity
                     shot_frames.append(frame_path)
+                    frame_counter += 1  # Only increment on success
                 else:
                     print(f"  ❌ Frame not created: {frame_path}")
             except Exception as e:

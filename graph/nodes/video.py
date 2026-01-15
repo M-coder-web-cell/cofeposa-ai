@@ -6,7 +6,6 @@ from datetime import datetime
 # Use /tmp/ for temporary files
 TMP_DIR = "/tmp/cofeposa"
 OUTPUT_VIDEO = f"{TMP_DIR}/final_video.mp4"
-AUDIO_PAD = f"{TMP_DIR}/voice_padded.wav"
 
 def video_node(state):
     fps = state.get("fps", 24)
@@ -24,40 +23,42 @@ def video_node(state):
     if not all_frames:
         raise ValueError("No frames to process - image generation may have failed")
 
-    # Create concat file for image sequence
-    concat_txt = f"{TMP_DIR}/concat.txt"
-    with open(concat_txt, "w") as f:
-        for frame in all_frames:
-            f.write(f"file '{frame}'\n")
+    # Check if audio exists and get its duration
+    audio_exists = os.path.exists(voice_path)
+    
+    if audio_exists:
+        # Get audio duration
+        result = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", voice_path],
+            capture_output=True, text=True
+        )
+        audio_duration = float(result.stdout.strip()) if result.stdout.strip() else 0
+        print(f"🎵 Audio duration: {audio_duration:.2f}s")
+        
+        # If audio is shorter, pad it using ffmpeg
+        if audio_duration < video_duration - 0.5:
+            padded_audio = f"{TMP_DIR}/voice_padded.wav"
+            subprocess.run([
+                "ffmpeg", "-y", "-i", voice_path,
+                "-af", f"apad=whole_dur={video_duration:.3f}",
+                padded_audio
+            ], check=True)
+            voice_path = padded_audio
+            print(f"🔊 Audio padded to {video_duration:.2f}s")
 
-    # Pad audio to match video duration (loop if shorter)
-    if os.path.exists(voice_path):
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-i", voice_path,
-            "-filter_complex", f"aloop=loop=-1:size={int(video_duration * 48000)},asetpts=PTS-STARTPTS",
-            "-i", concat_txt,
-            "-c:v", "libx264",
-            "-pix_fmt", "yuv420p",
-            "-preset", "fast",
-            "-r", str(fps),
-            "-c:a", "aac",
-            "-shortest",  # Now safe because audio is pre-padded to video length
-            OUTPUT_VIDEO
-        ], check=True)
-    else:
-        # No audio - just video
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-f", "concat",
-            "-safe", "0",
-            "-i", concat_txt,
-            "-c:v", "libx264",
-            "-pix_fmt", "yuv420p",
-            "-preset", "fast",
-            "-r", str(fps),
-            OUTPUT_VIDEO
-        ], check=True)
+    # Build video from images - use image2 demuxer for frame sequences
+    subprocess.run([
+        "ffmpeg", "-y",
+        "-framerate", str(fps),
+        "-i", f"{TMP_DIR}/frames/shot_%d_frame_%04d.png",
+        "-i", voice_path,
+        "-c:v", "libx264",
+        "-pix_fmt", "yuv420p",
+        "-preset", "fast",
+        "-c:a", "aac",
+        "-shortest",
+        OUTPUT_VIDEO
+    ], check=True)
 
     # Upload to S3
     title = (state.get("title") or "video").replace(" ", "_")
