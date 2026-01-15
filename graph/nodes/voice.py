@@ -18,7 +18,11 @@ def voice_node(state):
     duration = int(video_duration) + 1
     generate_voice(state["script"], TMP_AUDIO, duration=duration)
     
-    # Upload to S3 and return local path for video_node to use
-    state["voice_path"] = upload(TMP_AUDIO, "audio")
+    # Store BOTH local path and S3 path
+    local_path = TMP_AUDIO
+    s3_uri = upload(local_path, "audio")
+    
+    state["voice_path"] = local_path  # Use local path for ffmpeg
+    state["voice_s3_uri"] = s3_uri    # Store S3 URI for reference
+    
     return state
-
