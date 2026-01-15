@@ -22,7 +22,10 @@ def get_pipeline(model_id, mode="txt2img"):
             )
 
         pipe = pipe.to("cuda")
-        pipe.enable_xformers_memory_efficient_attention()
+        try:
+            pipe.enable_xformers_memory_efficient_attention()
+        except Exception:
+            print("⚠️ xformers not available, continuing without memory-efficient attention")
         _PIPELINES[key] = pipe
 
     return _PIPELINES[key]
