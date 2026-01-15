@@ -1,16 +1,15 @@
-# 🔥 Core ML
-torch==2.0.1+cu118
-torchvision==0.15.2+cu118
-torchaudio==2.0.1+cu118
-transformers==4.36.2
-diffusers==0.25.1
-accelerate==0.25.0
-safetensors==0.4.2
-huggingface_hub==0.20.3
-xformers==0.0.22.post7
+# 🔥 Core ML (CPU versions for container compatibility)
+torch
+torchvision
+torchaudio
+transformers
+diffusers
+accelerate
+safetensors
+huggingface_hub
 
 # 🎙️ Text-to-Speech
-coqui-tts==0.25.3
+coqui-tts
 
 # 🎬 Video / Images
 ffmpeg-python
@@ -27,3 +26,4 @@ boto3
 numpy
 scipy
 tqdm
+

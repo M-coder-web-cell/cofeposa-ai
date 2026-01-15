@@ -8,20 +8,24 @@ CONFIGS_DIR = os.path.join(SCRIPT_DIR, "..", "configs")
 
 _PIPELINES = {}
 
+# Use CPU if CUDA is not available
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {DEVICE}")
+
 def get_pipeline(model_id, mode="txt2img"):
     key = f"{model_id}:{mode}"
 
     if key not in _PIPELINES:
         if mode == "img2img":
             pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
-                model_id, torch_dtype=torch.float16
+                model_id, torch_dtype=torch.float16 if DEVICE == "cuda" else torch.float32
             )
         else:
             pipe = StableDiffusionPipeline.from_pretrained(
-                model_id, torch_dtype=torch.float16
+                model_id, torch_dtype=torch.float16 if DEVICE == "cuda" else torch.float32
             )
 
-        pipe = pipe.to("cuda")
+        pipe = pipe.to(DEVICE)
         try:
             pipe.enable_xformers_memory_efficient_attention()
         except Exception:
