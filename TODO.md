@@ -15,7 +15,9 @@
 - [x] 11. Fix scripts/render_video.py - change /workspace/tmp/ to /tmp/cofeposa/
 - [x] 12. Fix prompts/prompt.py - use absolute path for image_s3 (file:// scheme)
 - [x] 13. Fix scripts/generate_voice.py - remove unsupported --duration argument from TTS command
-- [x] 14. Syntax validation passed for all Python files
+- [x] 14. Fix graph/nodes/image.py - add comprehensive logging and error handling for image generation
+- [x] 15. Fix scripts/generate_image.py - add logging and error handling for SD pipeline
+- [x] 16. Syntax validation passed for all Python files
 
 ## Pipeline Successfully Tested! 🎉
 
