@@ -26,6 +26,11 @@ def get_pipeline(model_id, mode="txt2img"):
             )
 
         pipe = pipe.to(DEVICE)
+        
+        # Disable NSFW filter for unrestricted generation
+        pipe.safety_checker = None
+        
+        # Optionally disable xformers if it causes issues
         try:
             pipe.enable_xformers_memory_efficient_attention()
         except Exception:
