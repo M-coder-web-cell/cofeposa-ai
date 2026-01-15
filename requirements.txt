@@ -1,15 +1,18 @@
-# 🔥 Core ML
-torch
-transformers
-diffusers
-accelerate
-safetensors
-huggingface_hub
-xformers
+# 🔥 Core ML (PINNED – DO NOT CHANGE)
+torch==2.0.1+cu118
+torchvision==0.15.2+cu118
+--extra-index-url https://download.pytorch.org/whl/cu118
 
+transformers==4.36.2
+diffusers==0.25.1
+accelerate==0.25.0
+safetensors==0.4.2
+huggingface-hub==0.20.3
+xformers==0.0.22.post7
 
-# 🎙️ Text-to-Speech
-coqui-tts
+# 🎙️ Text-to-Speech (COMPATIBLE)
+coqui-tts==0.22.0
+torchaudio==2.0.2
 
 # 🎬 Video
 ffmpeg-python
@@ -23,6 +26,6 @@ langgraph
 boto3
 
 # 🧩 Utilities
-numpy
+numpy<2.0
 scipy
 tqdm
