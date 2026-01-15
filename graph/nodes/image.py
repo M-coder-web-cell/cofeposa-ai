@@ -18,7 +18,13 @@ def image_node(state):
         # Start from S3 image if provided
         if shot.get("image_s3"):
             local_input = f"/tmp/input_{i}.png"
-            download(shot["image_s3"], local_input)
+            try:
+                download(shot["image_s3"], local_input)
+            except Exception:
+                # If download fails (file not found, S3 not configured, etc.),
+                # generate a placeholder image locally using Stable Diffusion
+                print(f"⚠️ Could not load image for shot {i}, generating placeholder...")
+                generate_image(None, shot["prompt"], local_input)
         else:
             local_input = None
 
