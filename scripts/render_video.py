@@ -74,7 +74,7 @@ def render_cinematic_video(state):
             for c in clips:
                 f.write(f"file '{c}'\n")
 
-        output_video = "/workspace/tmp/final_video.mp4"
+        output_video = "/tmp/cofeposa/final_video.mp4"
         subprocess.run([
             "ffmpeg","-y","-f","concat","-safe","0",
             "-i", concat_file,
@@ -85,5 +85,5 @@ def render_cinematic_video(state):
         state["video_path"] = output_video
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
-    state["video_path"] = "/workspace/tmp/final_video.mp4"
+    state["video_path"] = "/tmp/cofeposa/final_video.mp4"
     return state

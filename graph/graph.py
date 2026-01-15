@@ -1,11 +1,12 @@
 from langgraph.graph import StateGraph
+from graph.state import VideoState
 from graph.nodes.prompt import prompt_node
 from graph.nodes.image import image_node
 from graph.nodes.voice import voice_node
 from graph.nodes.video import video_node
 
 def build_graph():
-    graph = StateGraph(dict)
+    graph = StateGraph(VideoState)
 
     graph.add_node("prompt", prompt_node)
     graph.add_node("image", image_node)
