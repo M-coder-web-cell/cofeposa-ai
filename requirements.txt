@@ -5,6 +5,8 @@ diffusers
 accelerate
 safetensors
 huggingface_hub
+xformers
+
 
 # 🎙️ Text-to-Speech
 coqui-tts

@@ -1,3 +1,4 @@
+import os
 import random
 from PIL import Image
 from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
@@ -8,7 +9,10 @@ def generate_image(input_image, prompt, output_path):
     model = choose_model(prompt)
     final_prompt = enrich_prompt(prompt)
 
-    if input_image:
+    # Check if input_image exists, otherwise fall back to txt2img
+    img_exists = input_image and os.path.exists(input_image)
+
+    if img_exists:
         # 🔁 IMG2IMG (photo → creative)
         pipe = get_pipeline(model["id"], mode="img2img")
 
@@ -19,17 +23,17 @@ def generate_image(input_image, prompt, output_path):
             image=init_image,
             strength=random.uniform(*model["strength"]),
             guidance_scale=random.uniform(*model["guidance"]),
-            num_inference_steps=30
+            num_inference_steps=20  # Reduced from 30 for faster execution
         ).images[0]
 
     else:
-        # 🎨 TXT2IMG (no photo)
+        # 🎨 TXT2IMG (no photo or file not found)
         pipe = get_pipeline(model["id"], mode="txt2img")
 
         image = pipe(
             prompt=final_prompt,
             guidance_scale=random.uniform(*model["guidance"]),
-            num_inference_steps=30
+            num_inference_steps=25  # Reduced from 30 for faster execution
         ).images[0]
 
     image.save(output_path)
