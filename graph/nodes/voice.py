@@ -1,3 +1,4 @@
+import os
 from scripts.generate_voice import generate_voice
 from utils.s3 import upload
 
