@@ -14,8 +14,9 @@ def voice_node(state):
     total_frames = sum(len(shot_frames) for shot_frames in state.get("frame_paths", []))
     video_duration = total_frames / fps
     
-    # Generate voice matching video duration
-    duration = int(video_duration) + 1
+    # Generate voice with EXACT duration to match video
+    # Use ceiling to ensure audio is at least as long as video
+    duration = (total_frames + fps - 1) // fps  # Ceiling division
     generate_voice(state["script"], TMP_AUDIO, duration=duration)
     
     # Store BOTH local path and S3 path
@@ -26,3 +27,4 @@ def voice_node(state):
     state["voice_s3_uri"] = s3_uri    # Store S3 URI for reference
     
     return state
+

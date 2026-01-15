@@ -18,7 +18,7 @@ def image_node(state):
     for i, shot in enumerate(shots):
         base_prompt = shot["prompt"]
         fps = state.get("fps", 24)
-        num_frames = int(shot.get("duration", 3) * fps)
+        num_frames = round(shot.get("duration", 3) * fps)  # Use round() to avoid truncation
         shot_frames = []
 
         print(f"🎨 Processing shot {i}: {num_frames} frames, prompt: {base_prompt[:50]}...")

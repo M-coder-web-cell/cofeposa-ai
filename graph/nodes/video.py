@@ -6,6 +6,7 @@ from datetime import datetime
 # Use /tmp/ for temporary files
 TMP_DIR = "/tmp/cofeposa"
 OUTPUT_VIDEO = f"{TMP_DIR}/final_video.mp4"
+AUDIO_PAD = f"{TMP_DIR}/voice_padded.wav"
 
 def video_node(state):
     fps = state.get("fps", 24)
@@ -29,21 +30,34 @@ def video_node(state):
         for frame in all_frames:
             f.write(f"file '{frame}'\n")
 
-    # Build video from images using concat demuxer
-    subprocess.run([
-        "ffmpeg", "-y",
-        "-f", "concat",
-        "-safe", "0",
-        "-i", concat_txt,
-        "-i", voice_path,
-        "-c:v", "libx264",
-        "-pix_fmt", "yuv420p",
-        "-preset", "fast",
-        "-r", str(fps),
-        "-c:a", "aac",
-        "-shortest",
-        OUTPUT_VIDEO
-    ], check=True)
+    # Pad audio to match video duration (loop if shorter)
+    if os.path.exists(voice_path):
+        subprocess.run([
+            "ffmpeg", "-y",
+            "-i", voice_path,
+            "-filter_complex", f"aloop=loop=-1:size={int(video_duration * 48000)},asetpts=PTS-STARTPTS",
+            "-i", concat_txt,
+            "-c:v", "libx264",
+            "-pix_fmt", "yuv420p",
+            "-preset", "fast",
+            "-r", str(fps),
+            "-c:a", "aac",
+            "-shortest",  # Now safe because audio is pre-padded to video length
+            OUTPUT_VIDEO
+        ], check=True)
+    else:
+        # No audio - just video
+        subprocess.run([
+            "ffmpeg", "-y",
+            "-f", "concat",
+            "-safe", "0",
+            "-i", concat_txt,
+            "-c:v", "libx264",
+            "-pix_fmt", "yuv420p",
+            "-preset", "fast",
+            "-r", str(fps),
+            OUTPUT_VIDEO
+        ], check=True)
 
     # Upload to S3
     title = (state.get("title") or "video").replace(" ", "_")
