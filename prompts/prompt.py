@@ -6,56 +6,58 @@ def get_prompt():
     default_image = os.path.join(project_root, "zeus.webp")  # reference image
 
     return {
-        "title": "Prometheus and the Fire of Humanity",
-        "fps": 7,
-        "topic": "Greek mythology, rebellion, sacrifice, fire, Zeus, divine war",
+        "title": "Prometheus and the Wrath of Zeus",
+        "fps": 8,
+        "topic": "Greek mythology, divine war, rebellion, fire, thunder, punishment",
 
         "shots": [
             {
                 "prompt": (
-                    "epic cinematic wide shot of Prometheus, a powerful ancient titan, "
-                    "standing on a massive rocky cliff beneath a storm-filled sky, "
+                    "epic cinematic wide shot of Prometheus standing on a towering mountain cliff, "
+                    "night sky tearing open above him, "
                     "holding a blazing golden fire stolen from Olympus, "
-                    "firelight illuminating his face and muscular form, "
-                    "Zeus visible faintly in the clouds above, watching in rage, "
-                    "ancient Greek myth atmosphere, thunder, wind, "
-                    "ultra realistic, dark cinematic lighting, film grain"
+                    "violent storm clouds swirling as Zeus’s colossal silhouette forms in the sky, "
+                    "lightning flashing around divine armor, "
+                    "mythic scale, rebellion before a god of war, "
+                    "ultra realistic, dramatic contrast, film grain"
                 ),
                 "duration": 5,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "cinematic medium shot of Prometheus descending toward humanity, "
-                    "fire cradled carefully in his hands, "
-                    "ancient humans reaching out in awe and fear, "
-                    "warm firelight contrasting against a dark primitive world, "
-                    "symbol of knowledge, progress, rebellion, "
-                    "slow emotional mythic storytelling, realistic ancient world"
+                    "cinematic war shot of Zeus in full fury, "
+                    "ancient god of thunder descending from the sky, "
+                    "muscular divine form surrounded by crackling lightning, "
+                    "throwing massive thunderbolts toward the earth, "
+                    "explosions of light and energy tearing through clouds, "
+                    "Olympian war atmosphere, chaos, power, destruction, "
+                    "ultra realistic god-scale combat, dark cinematic lighting"
                 ),
                 "duration": 5,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "violent cinematic war shot of Zeus, king of the gods, "
-                    "standing in the sky surrounded by lightning and storm clouds, "
-                    "throwing divine thunderbolts in fury, "
-                    "Olympian war energy, cosmic power, rage and judgment, "
-                    "epic god-scale battle atmosphere, ultra realistic, dramatic lighting"
+                    "dramatic cinematic shot of Prometheus being struck by Zeus’s thunder, "
+                    "divine lightning wrapping around his body, "
+                    "rocks exploding, fire falling from his hands toward humanity below, "
+                    "sacrifice frozen in time, "
+                    "slow-motion mythic tragedy, "
+                    "epic ancient war storytelling, ultra realistic detail"
                 ),
                 "duration": 5,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "dark tragic cinematic shot of Prometheus chained to a massive mountain, "
-                    "heavy iron chains binding his arms and torso, "
-                    "storm raging overhead, Zeus watching from the heavens, "
-                    "an eagle descending from the sky, "
-                    "Prometheus unbroken, firelight still glowing faintly in his eyes, "
-                    "eternal punishment for humanity’s gift, "
-                    "powerful mythic ending, perfect reel loop frame"
+                    "dark final cinematic shot of Prometheus chained to a desolate mountain, "
+                    "heavy iron chains glowing from divine lightning burns, "
+                    "Zeus hovering in the storm above, still throwing thunder into the sky, "
+                    "an eagle descending through rain and lightning, "
+                    "Prometheus unbroken, eyes glowing faintly with fire, "
+                    "eternal punishment, tragic beauty, "
+                    "powerful ending frame, perfect reel loop"
                 ),
                 "duration": 5,
                 "image_s3": f"file://{default_image}"
