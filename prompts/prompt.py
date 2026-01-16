@@ -3,7 +3,7 @@ def get_prompt():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.join(script_dir, "..")
-    default_image = os.path.join(project_root, "solo_travel.webp")  # replace later if needed
+    default_image = os.path.join(project_root, "echoes.webp")  # replace later if needed
 
     return {
         "title": "Echoes of the Forgotten Age",
