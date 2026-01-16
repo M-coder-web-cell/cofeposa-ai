@@ -3,54 +3,57 @@ def get_prompt():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.join(script_dir, "..")
-    default_image = os.path.join(project_root, "solo_travel.webp")
+    default_image = os.path.join(project_root, "solo_travel.webp")  # replace later if needed
 
     return {
-        "title": "Walking Into Freedom",
+        "title": "Echoes of the Forgotten Age",
         "fps": 7,
-        "topic": "Solo travel, inner peace, self discovery",
+        "topic": "Ancient history, myth, lost civilizations, timeless legacy",
 
         "shots": [
             {
                 "prompt": (
-                    "cinematic wide shot of a lone traveler walking along a wooden path "
-                    "through vast green grasslands, early golden hour light, "
-                    "soft clouds in the sky, peaceful atmosphere, "
-                    "slow camera push forward, gentle wind moving the grass, "
-                    "natural colors, subtle film grain, ultra realistic, "
-                    "emotional and calming solo travel aesthetic"
+                    "cinematic wide shot of an ancient forgotten city emerging from morning mist, "
+                    "massive stone temples and ruins covered in moss, "
+                    "golden sunrise light breaking through clouds, "
+                    "mythical atmosphere, sense of lost civilization, "
+                    "slow camera push forward, subtle fog movement, "
+                    "epic yet calm, historical fantasy, ultra realistic, "
+                    "film grain, timeless ancient world aesthetic"
                 ),
                 "duration": 3,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "medium cinematic shot of the traveler from behind, "
-                    "backpack visible, footsteps on the path, "
-                    "sunlight breaking through clouds, "
-                    "shallow depth of field, calm and reflective mood, "
-                    "soft cinematic lighting, minimal motion, "
-                    "peaceful solo journey, Instagram reel aesthetic"
+                    "medium cinematic shot of a lone ancient traveler or warrior seen from behind, "
+                    "wearing flowing robes or armor, standing before towering ruins, "
+                    "tattered banners moving gently in the wind, "
+                    "soft dramatic lighting, mysterious mood, "
+                    "mythical history, quiet power, slow motion feel, "
+                    "ancient legend atmosphere"
                 ),
                 "duration": 2
             },
             {
                 "prompt": (
-                    "close cinematic shot of tall grass gently swaying in the wind, "
-                    "wooden path leading into the distance, "
-                    "warm sunset tones, dreamy atmosphere, "
-                    "slow motion feel, natural film look, "
-                    "quiet, emotional, introspective travel moment"
+                    "close cinematic shot of ancient stone carvings and symbols glowing faintly, "
+                    "weathered inscriptions telling forgotten stories, "
+                    "dust particles floating in the air, "
+                    "warm torchlight, mystical energy, "
+                    "deep history, secrets of the past, "
+                    "slow, hypnotic, cinematic detail"
                 ),
                 "duration": 2
             },
             {
                 "prompt": (
-                    "wide ending shot of the traveler becoming smaller in the frame, "
-                    "open landscape stretching endlessly, "
-                    "soft fading sunlight, sense of freedom and solitude, "
-                    "cinematic composition, peaceful ending, "
-                    "loop-friendly final frame, aesthetic travel reel"
+                    "wide final cinematic shot of the ancient city fading into mist, "
+                    "sun setting behind massive stone structures, "
+                    "sense of eternity and legend, "
+                    "mythical silence, peaceful yet powerful ending, "
+                    "perfect loop-friendly frame, "
+                    "ancient history reel aesthetic"
                 ),
                 "duration": 3
             }
