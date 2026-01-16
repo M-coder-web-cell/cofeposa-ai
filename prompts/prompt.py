@@ -20,7 +20,7 @@ def get_prompt():
                     "natural colors, film grain, ultra realistic, "
                     "emotional and calming solo travel aesthetic"
                 ),
-                "duration": 6,
+                "duration": 3,
                 "image_s3": f"file://{default_image}"
             },
             {
@@ -32,7 +32,7 @@ def get_prompt():
                     "soft cinematic lighting, minimal motion, "
                     "Instagram reel style, peaceful journey"
                 ),
-                "duration": 6
+                "duration": 3
             },
             {
                 "prompt": (
@@ -42,7 +42,7 @@ def get_prompt():
                     "slow motion feel, natural film look, "
                     "quiet, emotional, introspective travel moment"
                 ),
-                "duration": 6
+                "duration": 3
             },
             {
                 "prompt": (
@@ -56,5 +56,5 @@ def get_prompt():
             }
         ],
 
-        "duration": 24
+        "duration": 15
     }
