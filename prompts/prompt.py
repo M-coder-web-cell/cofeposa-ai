@@ -7,7 +7,7 @@ def get_prompt():
 
     return {
         "title": "Walking Into Freedom",
-        "fps": 16,
+        "fps": 10,
         "topic": "Solo travel, inner peace, self discovery",
 
         "shots": [
