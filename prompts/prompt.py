@@ -3,61 +3,64 @@ def get_prompt():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.join(script_dir, "..")
-    default_image = os.path.join(project_root, "zeus.webp")  # reference image if available
+    default_image = os.path.join(project_root, "zeus.webp")  # reference image
 
     return {
         "title": "Prometheus and the Fire of Humanity",
-        "fps": 6,
-        "topic": "Greek mythology, rebellion, sacrifice, fire, divine punishment",
+        "fps": 7,
+        "topic": "Greek mythology, rebellion, sacrifice, fire, Zeus, divine war",
 
         "shots": [
             {
                 "prompt": (
                     "epic cinematic wide shot of Prometheus, a powerful ancient titan, "
-                    "standing on a high rocky cliff beneath a stormy sky, "
-                    "holding a glowing flame stolen from the gods, "
-                    "golden fire illuminating his face and muscular form, "
-                    "ancient Greek myth atmosphere, dramatic clouds, "
-                    "slow wind movement, symbolic rebellion, "
+                    "standing on a massive rocky cliff beneath a storm-filled sky, "
+                    "holding a blazing golden fire stolen from Olympus, "
+                    "firelight illuminating his face and muscular form, "
+                    "Zeus visible faintly in the clouds above, watching in rage, "
+                    "ancient Greek myth atmosphere, thunder, wind, "
                     "ultra realistic, dark cinematic lighting, film grain"
                 ),
-                "duration": 3,
+                "duration": 5,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
                     "cinematic medium shot of Prometheus descending toward humanity, "
-                    "fire cupped carefully in his hands, "
-                    "warm light contrasting against the dark world, "
-                    "ancient humans below receiving fire for the first time, "
-                    "hope, progress, and knowledge symbolized, "
-                    "slow, emotional, mythic storytelling, "
-                    "realistic ancient world"
+                    "fire cradled carefully in his hands, "
+                    "ancient humans reaching out in awe and fear, "
+                    "warm firelight contrasting against a dark primitive world, "
+                    "symbol of knowledge, progress, rebellion, "
+                    "slow emotional mythic storytelling, realistic ancient world"
                 ),
-                "duration": 3
+                "duration": 5,
+                "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "dark cinematic shot of Zeus’s judgment, "
-                    "Prometheus chained to a massive rock on a lonely mountain, "
-                    "heavy iron chains across his body, "
-                    "storm clouds overhead, sense of divine punishment, "
-                    "epic tragedy, ancient myth realism, "
-                    "slow camera pull back, dramatic shadows"
+                    "violent cinematic war shot of Zeus, king of the gods, "
+                    "standing in the sky surrounded by lightning and storm clouds, "
+                    "throwing divine thunderbolts in fury, "
+                    "Olympian war energy, cosmic power, rage and judgment, "
+                    "epic god-scale battle atmosphere, ultra realistic, dramatic lighting"
                 ),
-                "duration": 3
+                "duration": 5,
+                "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "final cinematic symbolic shot of an eagle descending from the sky, "
-                    "Prometheus bound but unbroken, firelight still glowing faintly in his eyes, "
-                    "eternal suffering for humanity’s gift, "
-                    "mythical silence, tragic beauty, "
-                    "powerful ending frame, perfect loop for reels"
+                    "dark tragic cinematic shot of Prometheus chained to a massive mountain, "
+                    "heavy iron chains binding his arms and torso, "
+                    "storm raging overhead, Zeus watching from the heavens, "
+                    "an eagle descending from the sky, "
+                    "Prometheus unbroken, firelight still glowing faintly in his eyes, "
+                    "eternal punishment for humanity’s gift, "
+                    "powerful mythic ending, perfect reel loop frame"
                 ),
-                "duration": 3
+                "duration": 5,
+                "image_s3": f"file://{default_image}"
             }
         ],
 
-        "duration": 12
+        "duration": 20
     }
