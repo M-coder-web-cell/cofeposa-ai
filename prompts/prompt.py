@@ -3,61 +3,61 @@ def get_prompt():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.join(script_dir, "..")
-    default_image = os.path.join(project_root, "echoes.webp")  # replace later if needed
+    default_image = os.path.join(project_root, "zeus.webp")  # reference image if available
 
     return {
-        "title": "Echoes of the Forgotten Age",
-        "fps": 7,
-        "topic": "Ancient history, myth, lost civilizations, timeless legacy",
+        "title": "Prometheus and the Fire of Humanity",
+        "fps": 6,
+        "topic": "Greek mythology, rebellion, sacrifice, fire, divine punishment",
 
         "shots": [
             {
                 "prompt": (
-                    "cinematic wide shot of an ancient forgotten city emerging from morning mist, "
-                    "massive stone temples and ruins covered in moss, "
-                    "golden sunrise light breaking through clouds, "
-                    "mythical atmosphere, sense of lost civilization, "
-                    "slow camera push forward, subtle fog movement, "
-                    "epic yet calm, historical fantasy, ultra realistic, "
-                    "film grain, timeless ancient world aesthetic"
+                    "epic cinematic wide shot of Prometheus, a powerful ancient titan, "
+                    "standing on a high rocky cliff beneath a stormy sky, "
+                    "holding a glowing flame stolen from the gods, "
+                    "golden fire illuminating his face and muscular form, "
+                    "ancient Greek myth atmosphere, dramatic clouds, "
+                    "slow wind movement, symbolic rebellion, "
+                    "ultra realistic, dark cinematic lighting, film grain"
                 ),
                 "duration": 3,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "medium cinematic shot of a lone ancient traveler or warrior seen from behind, "
-                    "wearing flowing robes or armor, standing before towering ruins, "
-                    "tattered banners moving gently in the wind, "
-                    "soft dramatic lighting, mysterious mood, "
-                    "mythical history, quiet power, slow motion feel, "
-                    "ancient legend atmosphere"
+                    "cinematic medium shot of Prometheus descending toward humanity, "
+                    "fire cupped carefully in his hands, "
+                    "warm light contrasting against the dark world, "
+                    "ancient humans below receiving fire for the first time, "
+                    "hope, progress, and knowledge symbolized, "
+                    "slow, emotional, mythic storytelling, "
+                    "realistic ancient world"
                 ),
-                "duration": 2
+                "duration": 3
             },
             {
                 "prompt": (
-                    "close cinematic shot of ancient stone carvings and symbols glowing faintly, "
-                    "weathered inscriptions telling forgotten stories, "
-                    "dust particles floating in the air, "
-                    "warm torchlight, mystical energy, "
-                    "deep history, secrets of the past, "
-                    "slow, hypnotic, cinematic detail"
+                    "dark cinematic shot of Zeus’s judgment, "
+                    "Prometheus chained to a massive rock on a lonely mountain, "
+                    "heavy iron chains across his body, "
+                    "storm clouds overhead, sense of divine punishment, "
+                    "epic tragedy, ancient myth realism, "
+                    "slow camera pull back, dramatic shadows"
                 ),
-                "duration": 2
+                "duration": 3
             },
             {
                 "prompt": (
-                    "wide final cinematic shot of the ancient city fading into mist, "
-                    "sun setting behind massive stone structures, "
-                    "sense of eternity and legend, "
-                    "mythical silence, peaceful yet powerful ending, "
-                    "perfect loop-friendly frame, "
-                    "ancient history reel aesthetic"
+                    "final cinematic symbolic shot of an eagle descending from the sky, "
+                    "Prometheus bound but unbroken, firelight still glowing faintly in his eyes, "
+                    "eternal suffering for humanity’s gift, "
+                    "mythical silence, tragic beauty, "
+                    "powerful ending frame, perfect loop for reels"
                 ),
                 "duration": 3
             }
         ],
 
-        "duration": 10
+        "duration": 12
     }
