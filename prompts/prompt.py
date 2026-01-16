@@ -17,7 +17,7 @@ def get_prompt():
                     "through vast green grasslands, early golden hour light, "
                     "soft clouds in the sky, peaceful atmosphere, "
                     "slow camera push forward, gentle wind moving the grass, "
-                    "natural colors, film grain, ultra realistic, "
+                    "natural colors, subtle film grain, ultra realistic, "
                     "emotional and calming solo travel aesthetic"
                 ),
                 "duration": 3,
@@ -30,19 +30,19 @@ def get_prompt():
                     "sunlight breaking through clouds, "
                     "shallow depth of field, calm and reflective mood, "
                     "soft cinematic lighting, minimal motion, "
-                    "Instagram reel style, peaceful journey"
+                    "peaceful solo journey, Instagram reel aesthetic"
                 ),
-                "duration": 3
+                "duration": 2
             },
             {
                 "prompt": (
-                    "close cinematic shot of tall grass swaying in the wind, "
+                    "close cinematic shot of tall grass gently swaying in the wind, "
                     "wooden path leading into the distance, "
                     "warm sunset tones, dreamy atmosphere, "
                     "slow motion feel, natural film look, "
                     "quiet, emotional, introspective travel moment"
                 ),
-                "duration": 3
+                "duration": 2
             },
             {
                 "prompt": (
@@ -50,11 +50,11 @@ def get_prompt():
                     "open landscape stretching endlessly, "
                     "soft fading sunlight, sense of freedom and solitude, "
                     "cinematic composition, peaceful ending, "
-                    "perfect loop-friendly frame, aesthetic travel reel"
+                    "loop-friendly final frame, aesthetic travel reel"
                 ),
-                "duration": 6
+                "duration": 3
             }
         ],
 
-        "duration": 15
+        "duration": 10
     }
