@@ -67,19 +67,25 @@ def download(s3_uri_or_local, local_path):
     if s3_uri_or_local is None:
         raise ValueError("No source path provided to download()")
 
+    # Handle file:// URIs and local paths FIRST, before S3
     if not s3_uri_or_local.startswith("s3://"):
-        # treat as local path
-        if os.path.exists(s3_uri_or_local):
-            os.makedirs(os.path.dirname(local_path), exist_ok=True)
-            shutil.copyfile(s3_uri_or_local, local_path)
-            return local_path
-        # allow file:// scheme
         parsed = urlparse(s3_uri_or_local)
+
+        # Extract source path: use parsed path for file:// URIs, or original string for local paths
         if parsed.scheme == "file":
             src = parsed.path
-            os.makedirs(os.path.dirname(local_path), exist_ok=True)
-            shutil.copyfile(src, local_path)
-            return local_path
+        else:
+            # Plain local path (no scheme)
+            src = s3_uri_or_local
+
+        # Validate source file exists
+        if not os.path.exists(src):
+            raise FileNotFoundError(f"Local source file not found: {src}")
+
+        # Copy to destination
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
+        shutil.copyfile(src, local_path)
+        return local_path
 
     # Otherwise assume s3://bucket/key
     if not S3_ENABLED:
@@ -111,4 +117,3 @@ def upload_fileobj(fileobj, s3_key, bucket=None):
     )
 
     return f"s3://{bucket}/{s3_key}"
-
