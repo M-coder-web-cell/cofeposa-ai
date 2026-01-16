@@ -7,7 +7,7 @@ def get_prompt():
 
     return {
         "title": "Prometheus and the Wrath of Zeus",
-        "fps": 12,
+        "fps": 14,
         "topic": "Greek mythology, divine war, rebellion, fire, thunder, punishment",
 
         "shots": [
@@ -64,5 +64,5 @@ def get_prompt():
             }
         ],
 
-        "duration": 20
+        "duration": 12
     }
