@@ -53,6 +53,7 @@ def image_node(state):
             # Use sequential naming for ffmpeg image2 demuxer
             image_path = f"{FRAMES_DIR}/frame_{frame_counter:06d}.png"
             
+            # Generate one diffusion image
             try:
                 # Generate one diffusion image
                 generate_image(prev_img, base_prompt, image_path, frame_num=img_i, total_frames=num_images)
@@ -69,9 +70,13 @@ def image_node(state):
                 print(f"  ❌ Error generating image {img_i}: {e}")
                 prev_img = None
             
-            # Repeat this image 'repeat_factor' times for smooth playback
+            # Copy this image to ALL frame slots for this repetition
             for r in range(repeat_factor):
-                shot_frames.append(image_path)
+                dest_path = f"{FRAMES_DIR}/frame_{frame_counter:06d}.png"
+                if image_path != dest_path:
+                    import shutil
+                    shutil.copy2(image_path, dest_path)
+                shot_frames.append(dest_path)
                 frame_counter += 1
 
         if shot_frames:
