@@ -1,32 +1,60 @@
 def get_prompt():
     import os
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.join(script_dir, "..")
-    default_image = os.path.join(project_root, "endofhumanity.jpg")
+    default_image = os.path.join(project_root, "solo_travel.webp")
 
     return {
-        "title": "Futuristic Smart City of Tomorrow",
-        "fps": 24,
-        "topic": "Advanced AI technology improving human life",
+        "title": "Walking Into Freedom",
+        "fps": 16,
+        "topic": "Solo travel, inner peace, self discovery",
+
         "shots": [
             {
-                "prompt": "Breathtaking aerial view of a futuristic smart city at golden hour, sleek towers with green gardens, flying vehicles, beautiful sunset sky",
-                "duration": 8,
+                "prompt": (
+                    "cinematic wide shot of a lone traveler walking along a wooden path "
+                    "through vast green grasslands, early golden hour light, "
+                    "soft clouds in the sky, peaceful atmosphere, "
+                    "slow camera push forward, gentle wind moving the grass, "
+                    "natural colors, film grain, ultra realistic, "
+                    "emotional and calming solo travel aesthetic"
+                ),
+                "duration": 6,
                 "image_s3": f"file://{default_image}"
             },
             {
-                "prompt": "Modern AI control center with holographic displays showing data visualizations, clean white room, soft ambient lighting, friendly robots assisting humans",
-                "duration": 7
+                "prompt": (
+                    "medium cinematic shot of the traveler from behind, "
+                    "backpack visible, footsteps on the path, "
+                    "sunlight breaking through clouds, "
+                    "shallow depth of field, calm and reflective mood, "
+                    "soft cinematic lighting, minimal motion, "
+                    "Instagram reel style, peaceful journey"
+                ),
+                "duration": 6
             },
             {
-                "prompt": "Peaceful city street at twilight, glowing lanterns, robots carrying packages for delivery, misty atmosphere, beautiful architecture",
-                "duration": 7
+                "prompt": (
+                    "close cinematic shot of tall grass swaying in the wind, "
+                    "wooden path leading into the distance, "
+                    "warm sunset tones, dreamy atmosphere, "
+                    "slow motion feel, natural film look, "
+                    "quiet, emotional, introspective travel moment"
+                ),
+                "duration": 6
             },
             {
-                "prompt": "Indoor futuristic workspace, humans working with AI assistants on holographic screens, warm cozy lighting, floor to ceiling windows with city view",
-                "duration": 7
+                "prompt": (
+                    "wide ending shot of the traveler becoming smaller in the frame, "
+                    "open landscape stretching endlessly, "
+                    "soft fading sunlight, sense of freedom and solitude, "
+                    "cinematic composition, peaceful ending, "
+                    "perfect loop-friendly frame, aesthetic travel reel"
+                ),
+                "duration": 6
             }
         ],
-        "duration": 29
-    }
 
+        "duration": 24
+    }
