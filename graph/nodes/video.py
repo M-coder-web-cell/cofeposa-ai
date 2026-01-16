@@ -47,6 +47,7 @@ def video_node(state):
             print(f"🔊 Audio padded to {video_duration:.2f}s")
 
     # Build video from images - use image2 demuxer for frame sequences
+    # Apply light cinematic post-processing: unsharp, slight contrast & saturation boost
     subprocess.run([
         "ffmpeg", "-y",
         "-framerate", str(fps),
@@ -54,7 +55,10 @@ def video_node(state):
         "-i", voice_path,
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
-        "-preset", "fast",
+        "-preset", "slow",
+        "-crf", "18",
+        "-vf", "unsharp=5:5:1.0:5:5:0.0,eq=saturation=1.1,eq=contrast=1.05",
+        "-r", str(fps),
         "-c:a", "aac",
         "-shortest",
         OUTPUT_VIDEO

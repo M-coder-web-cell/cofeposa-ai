@@ -5,6 +5,9 @@ from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
 from scripts.model_registry import get_pipeline
 from prompts.creative_router import choose_model, enrich_prompt
 
+# Global negative prompt for quality improvement
+NEGATIVE_PROMPT = "blurry, low quality, distorted, deformed, bad anatomy, watermark, text, logo, jpeg artifacts"
+
 # Camera motion hints for temporal variation
 CAMERA_MOTIONS = [
     "slow pan left",
@@ -38,14 +41,15 @@ def generate_image(input_image, prompt, output_path, frame_num=0, total_frames=1
             init_image = Image.open(input_image).convert("RGB").resize((512, 512))
 
             # Lower strength for gradual evolution, higher for keyframes
-            strength = 0.35 if frame_num > 0 else 0.65
+            strength = 0.25 if frame_num > 0 else 0.45
             
             image = pipe(
                 prompt=final_prompt,
+                negative_prompt=NEGATIVE_PROMPT,
                 image=init_image,
                 strength=strength,
-                guidance_scale=random.uniform(*model["guidance"]),
-                num_inference_steps=25
+                guidance_scale=8.5,
+                num_inference_steps=40
             ).images[0]
 
         else:
@@ -54,8 +58,9 @@ def generate_image(input_image, prompt, output_path, frame_num=0, total_frames=1
 
             image = pipe(
                 prompt=final_prompt,
-                guidance_scale=random.uniform(*model["guidance"]),
-                num_inference_steps=25
+                negative_prompt=NEGATIVE_PROMPT,
+                guidance_scale=8.5,
+                num_inference_steps=40
             ).images[0]
 
         # Ensure output directory exists
