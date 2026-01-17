@@ -3,63 +3,64 @@ def get_prompt():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.join(script_dir, "..")
-    default_image = os.path.join(project_root, "zeus.webp")  # reference image
+    default_image = os.path.join(project_root, "memories.webp")  # reference image
 
     return {
-        "title": "Prometheus and the Wrath of Zeus",
+        "title": "A Memory From a Future Life",
         "fps": 18,
-        "topic": "Greek mythology, divine war, rebellion, fire, thunder, punishment",
+        "topic": "future memories, urban sci-fi, destiny, latent power, realism",
 
         "shots": [
             {
                 "prompt": (
-                    "epic cinematic wide shot of Prometheus standing on a towering mountain cliff, "
-                    "night sky tearing open above him, "
-                    "holding a blazing golden fire stolen from Olympus, "
-                    "violent storm clouds swirling as Zeus’s colossal silhouette forms in the sky, "
-                    "lightning flashing around divine armor, "
-                    "mythic scale, rebellion before a god of war, "
-                    "ultra realistic, dramatic contrast, film grain"
+                    "cinematic urban street shot, same person as reference image, "
+                    "standing in a narrow city alley, "
+                    "holding a glowing light between their hands, "
+                    "realistic modern environment, brick wall, parked cars, "
+                    "soft cinematic lighting, shallow depth of field, "
+                    "grounded sci-fi realism, "
+                    "this moment feels remembered rather than happening, "
+                    "ultra realistic, film grain, natural skin texture"
                 ),
-                "duration": 5,
+                "duration": 3,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "cinematic war shot of Zeus in full fury, "
-                    "ancient god of thunder descending from the sky, "
-                    "muscular divine form surrounded by crackling lightning, "
-                    "throwing massive thunderbolts toward the earth, "
-                    "explosions of light and energy tearing through clouds, "
-                    "Olympian war atmosphere, chaos, power, destruction, "
-                    "ultra realistic god-scale combat, dark cinematic lighting"
+                    "same person, same pose and clothing, "
+                    "environment subtly changed, street looks slightly emptier, "
+                    "light in hands brighter and more focused, "
+                    "cinematic contrast, gentle wind movement, "
+                    "future memory atmosphere, "
+                    "everything feels familiar but slightly off, "
+                    "realistic urban sci-fi, film grain"
                 ),
-                "duration": 5,
+                "duration": 3,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "dramatic cinematic shot of Prometheus being struck by Zeus’s thunder, "
-                    "divine lightning wrapping around his body, "
-                    "rocks exploding, fire falling from his hands toward humanity below, "
-                    "sacrifice frozen in time, "
-                    "slow-motion mythic tragedy, "
-                    "epic ancient war storytelling, ultra realistic detail"
+                    "same person, same framing, "
+                    "nightfall version of the same alley, "
+                    "street lights glowing, reflections on wet ground, "
+                    "the glowing light now pulsing softly, "
+                    "sense of destiny, time folding in on itself, "
+                    "subtle sci-fi realism, cinematic lighting, ultra realistic"
                 ),
-                "duration": 5,
+                "duration": 3,
                 "image_s3": f"file://{default_image}"
             },
             {
                 "prompt": (
-                    "dark final cinematic shot of Prometheus chained to a desolate mountain, "
-                    "heavy iron chains glowing from divine lightning burns, "
-                    "Zeus hovering in the storm above, still throwing thunder into the sky, "
-                    "an eagle descending through rain and lightning, "
-                    "Prometheus unbroken, eyes glowing faintly with fire, "
-                    "eternal punishment, tragic beauty, "
-                    "powerful ending frame, perfect reel loop"
+                    "final cinematic shot, same person unchanged, "
+                    "the alley now quiet and empty, "
+                    "light in hands slowly dimming, "
+                    "expression calm, as if remembering something that hasn’t happened yet, "
+                    "melancholic but hopeful tone, "
+                    "perfect loop ending frame, "
+                    "realistic cinematic urban future memory"
                 ),
-                "duration": 5,
+                "duration": 3,
                 "image_s3": f"file://{default_image}"
             }
         ],
