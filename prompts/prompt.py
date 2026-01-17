@@ -13,14 +13,19 @@ def get_prompt():
         "shots": [
             {
                 "prompt": (
-                    "cinematic urban street shot, same person as reference image, "
-                    "standing in a narrow city alley, "
-                    "holding a glowing light between their hands, "
-                    "realistic modern environment, brick wall, parked cars, "
-                    "soft cinematic lighting, shallow depth of field, "
-                    "grounded sci-fi realism, "
-                    "this moment feels remembered rather than happening, "
-                    "ultra realistic, film grain, natural skin texture"
+                    "cinematic ultra-close opening shot of the same person from the reference image, "
+                    "standing in a narrow urban alley at night, "
+                    "intense glowing light source forming in their hands, "
+                    "bright energy flare visible immediately in the first frame, "
+                    "high contrast lighting with deep shadows, "
+                    "wet concrete reflecting the light, "
+                    "subtle rain mist in the air catching the glow, "
+                    "futuristic yet realistic atmosphere, "
+                    "the person’s face partially lit, eyes focused and calm, "
+                    "a feeling of recognition, like remembering something that hasn’t happened yet, "
+                    "modern cinematic realism, anamorphic depth of field, "
+                    "film grain, sharp focus, dramatic color contrast, "
+                    "scroll-stopping first frame, strong focal point"
                 ),
                 "duration": 3,
                 "image_s3": f"file://{default_image}"
